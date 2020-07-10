@@ -7,19 +7,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Module;
 import com.github.emm035.openapi.schema.generator.annotations.Internal;
 import com.github.emm035.openapi.schema.generator.assisted.RefFactory;
 import com.github.emm035.openapi.schema.generator.base.Schemas;
 import com.github.emm035.openapi.schema.generator.base.TypeUtils;
 import com.github.emm035.openapi.schema.generator.exceptions.SchemaGenerationException;
 import com.github.emm035.openapi.schema.generator.result.SchemaResult;
-
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Module;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Map;
@@ -56,7 +55,8 @@ public class SchemaGenerator {
     return generateSchema(typeFactory.constructType(typeReference));
   }
 
-  public Referenceable<Schema> generateSchema(Type type) throws SchemaGenerationException {
+  public Referenceable<Schema> generateSchema(Type type)
+    throws SchemaGenerationException {
     return generateSchema(typeFactory.constructType(type));
   }
 
@@ -83,7 +83,8 @@ public class SchemaGenerator {
     );
   }
 
-  public Schema resolveRef(Referenceable<Schema> refOrSchema) throws SchemaGenerationException {
+  public Schema resolveRef(Referenceable<Schema> refOrSchema)
+    throws SchemaGenerationException {
     return schemas.resolve(refOrSchema);
   }
 

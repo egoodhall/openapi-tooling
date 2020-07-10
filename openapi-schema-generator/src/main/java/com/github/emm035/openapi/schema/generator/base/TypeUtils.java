@@ -7,7 +7,6 @@ import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -59,7 +58,9 @@ public class TypeUtils {
       .orElseGet(ImmutableList::of)
       .stream()
       .filter(Predicates.not(type -> Strings.isNullOrEmpty(type.name())))
-      .collect(ImmutableMap.toImmutableMap(JsonSubTypes.Type::name, JsonSubTypes.Type::value));
+      .collect(
+        ImmutableMap.toImmutableMap(JsonSubTypes.Type::name, JsonSubTypes.Type::value)
+      );
   }
 
   public static JavaType unwrap(JavaType javaType) {

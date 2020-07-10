@@ -1,7 +1,6 @@
 package com.github.emm035.openapi.schema.generator.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-
 import java.util.Optional;
 
 public class Impl1 implements Base {

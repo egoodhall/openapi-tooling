@@ -4,17 +4,16 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonIntegerFormatVisitor;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonNumberFormatVisitor;
-import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.github.emm035.openapi.schema.generator.assisted.Extension;
-import com.github.emm035.openapi.schema.generator.base.Generator;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.IntegerSchema;
 import com.github.emm035.openapi.core.v3.schemas.NumberSchema;
 import com.github.emm035.openapi.core.v3.schemas.NumericSchema;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
-
+import com.github.emm035.openapi.schema.generator.assisted.Extension;
+import com.github.emm035.openapi.schema.generator.base.Generator;
+import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import java.util.Optional;
 
 public class NumberFormatVisitor
@@ -25,8 +24,10 @@ public class NumberFormatVisitor
   private NumericSchema<?> schema;
 
   @Inject
-  public NumberFormatVisitor(@Assisted JavaType javaType,
-                             @Extension SchemaExtension schemaExtension) {
+  public NumberFormatVisitor(
+    @Assisted JavaType javaType,
+    @Extension SchemaExtension schemaExtension
+  ) {
     this.javaType = javaType;
     this.schemaExtension = schemaExtension;
   }

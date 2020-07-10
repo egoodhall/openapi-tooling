@@ -3,16 +3,15 @@ package com.github.emm035.openapi.schema.generator.visitors;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonStringFormatVisitor;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonValueFormat;
+import com.github.emm035.openapi.core.v3.references.Referenceable;
+import com.github.emm035.openapi.core.v3.schemas.Schema;
+import com.github.emm035.openapi.core.v3.schemas.StringSchema;
+import com.github.emm035.openapi.schema.generator.base.Generator;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.github.emm035.openapi.schema.generator.base.Generator;
-import com.github.emm035.openapi.core.v3.references.Referenceable;
-import com.github.emm035.openapi.core.v3.schemas.Schema;
-import com.github.emm035.openapi.core.v3.schemas.StringSchema;
-
 import java.util.Set;
 
 public class StringFormatVisitor

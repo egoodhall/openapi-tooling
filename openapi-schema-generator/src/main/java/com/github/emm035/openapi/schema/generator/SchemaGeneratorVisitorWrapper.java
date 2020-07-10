@@ -10,20 +10,20 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonMapFormatVisitor;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonNumberFormatVisitor;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonStringFormatVisitor;
-import com.github.emm035.openapi.schema.generator.exceptions.SchemaGeneratorInternalException;
-import com.github.emm035.openapi.schema.generator.visitors.SubTypedObjectFormatVisitor;
-import com.google.inject.Inject;
+import com.github.emm035.openapi.core.v3.references.Referenceable;
+import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.assisted.SubTypeGenerator;
 import com.github.emm035.openapi.schema.generator.base.Generator;
 import com.github.emm035.openapi.schema.generator.base.TypeUtils;
+import com.github.emm035.openapi.schema.generator.exceptions.SchemaGeneratorInternalException;
 import com.github.emm035.openapi.schema.generator.visitors.ArrayFormatVisitor;
 import com.github.emm035.openapi.schema.generator.visitors.BooleanFormatVisitor;
 import com.github.emm035.openapi.schema.generator.visitors.MapFormatVisitor;
 import com.github.emm035.openapi.schema.generator.visitors.NumberFormatVisitor;
 import com.github.emm035.openapi.schema.generator.visitors.ObjectFormatVisitor;
 import com.github.emm035.openapi.schema.generator.visitors.StringFormatVisitor;
-import com.github.emm035.openapi.core.v3.references.Referenceable;
-import com.github.emm035.openapi.core.v3.schemas.Schema;
+import com.github.emm035.openapi.schema.generator.visitors.SubTypedObjectFormatVisitor;
+import com.google.inject.Inject;
 
 public class SchemaGeneratorVisitorWrapper
   extends JsonFormatVisitorWrapper.Base

@@ -4,19 +4,19 @@ import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
+import com.github.emm035.openapi.core.v3.references.Referenceable;
+import com.github.emm035.openapi.core.v3.schemas.ObjectSchema;
+import com.github.emm035.openapi.core.v3.schemas.Schema;
+import com.github.emm035.openapi.schema.generator.assisted.Extension;
+import com.github.emm035.openapi.schema.generator.assisted.NestedSchemaGenerator;
+import com.github.emm035.openapi.schema.generator.assisted.RefFactory;
+import com.github.emm035.openapi.schema.generator.base.Generator;
+import com.github.emm035.openapi.schema.generator.base.Schemas;
+import com.github.emm035.openapi.schema.generator.base.TypeUtils;
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.github.emm035.openapi.schema.generator.assisted.Extension;
-import com.github.emm035.openapi.schema.generator.assisted.RefFactory;
-import com.github.emm035.openapi.schema.generator.assisted.NestedSchemaGenerator;
-import com.github.emm035.openapi.schema.generator.base.Generator;
-import com.github.emm035.openapi.schema.generator.base.Schemas;
-import com.github.emm035.openapi.schema.generator.base.TypeUtils;
-import com.github.emm035.openapi.core.v3.references.Referenceable;
-import com.github.emm035.openapi.core.v3.schemas.ObjectSchema;
-import com.github.emm035.openapi.core.v3.schemas.Schema;
 
 public class ObjectFormatVisitor
   extends JsonObjectFormatVisitor.Base
@@ -61,21 +61,19 @@ public class ObjectFormatVisitor
     if (schemas.exists(typeName)) {
       schema = refFactory.create(typeName);
     } else {
-      schema = nestedSchemaGenerator.generateSchema(TypeUtils.unwrap(prop.getType()), false);
+      schema =
+        nestedSchemaGenerator.generateSchema(TypeUtils.unwrap(prop.getType()), false);
     }
     Schema modifiedSchema = propertyExtension.modify(schemas.resolve(schema), prop);
 
     // Overwrite schema if needed
     if (schema.isReferential()) {
       this.schemaBuilder.putProperties(
-        prop.getName(),
-        schemas.putSchema(prop.getName(), modifiedSchema)
-      );
+          prop.getName(),
+          schemas.putSchema(prop.getName(), modifiedSchema)
+        );
     } else {
-      this.schemaBuilder.putProperties(
-        prop.getName(),
-        modifiedSchema
-      );
+      this.schemaBuilder.putProperties(prop.getName(), modifiedSchema);
     }
   }
 

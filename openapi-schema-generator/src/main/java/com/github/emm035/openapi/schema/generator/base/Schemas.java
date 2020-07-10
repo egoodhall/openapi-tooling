@@ -2,6 +2,9 @@ package com.github.emm035.openapi.schema.generator.base;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.emm035.openapi.core.v3.references.Ref;
+import com.github.emm035.openapi.core.v3.references.Referenceable;
+import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.annotations.Internal;
 import com.github.emm035.openapi.schema.generator.annotations.RefPrefix;
 import com.github.emm035.openapi.schema.generator.assisted.RefFactory;
@@ -12,10 +15,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import com.google.inject.Inject;
-import com.github.emm035.openapi.core.v3.references.Ref;
-import com.github.emm035.openapi.core.v3.references.Referenceable;
-import com.github.emm035.openapi.core.v3.schemas.Schema;
-
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -52,7 +51,8 @@ public class Schemas {
     if (!refOrSchema.isReferential()) {
       return Schema.class.cast(refOrSchema);
     }
-    String referencedType = ((Ref<Schema>) refOrSchema).getRef().substring(refPrefix.length());
+    String referencedType =
+      ((Ref<Schema>) refOrSchema).getRef().substring(refPrefix.length());
     Preconditions.checkArgument(
       schemas.containsKey(referencedType),
       "Schema " + referencedType + " not found"

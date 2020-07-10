@@ -2,13 +2,12 @@ package com.github.emm035.openapi.schema.generator.assisted;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.github.emm035.openapi.schema.generator.annotations.Internal;
-import com.github.emm035.openapi.schema.generator.annotations.RefPrefix;
-import com.google.inject.Inject;
-import com.github.emm035.openapi.schema.generator.base.TypeUtils;
 import com.github.emm035.openapi.core.v3.references.Ref;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
-
+import com.github.emm035.openapi.schema.generator.annotations.Internal;
+import com.github.emm035.openapi.schema.generator.annotations.RefPrefix;
+import com.github.emm035.openapi.schema.generator.base.TypeUtils;
+import com.google.inject.Inject;
 import java.util.regex.Pattern;
 
 public class RefFactory {
@@ -18,8 +17,7 @@ public class RefFactory {
   private final TypeFactory typeFactory;
 
   @Inject
-  public RefFactory(@RefPrefix String refPrefix,
-                    @Internal TypeFactory typeFactory) {
+  public RefFactory(@RefPrefix String refPrefix, @Internal TypeFactory typeFactory) {
     this.refPrefix = refPrefix.endsWith("/") ? refPrefix : refPrefix + "/";
     this.typeFactory = typeFactory;
   }
