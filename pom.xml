@@ -27,6 +27,7 @@
 
   <modules>
     <module>openapi-core</module>
+    <module>openapi-schema-generator</module>
   </modules>
 
   <scm>
