@@ -1,37 +1,45 @@
 package com.github.emm035.openapi.core.v3;
 
+import static org.immutables.value.Value.Check;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.emm035.openapi.core.v3.parameters.Parameter;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
+import com.github.emm035.openapi.core.v3.servers.Server;
 import com.github.emm035.openapi.core.v3.shared.Describable;
 import com.github.emm035.openapi.core.v3.shared.Extensible;
 import com.github.emm035.openapi.core.v3.shared.HttpMethod;
 import com.github.emm035.openapi.core.v3.shared.OpenApiStyle;
 import com.github.emm035.openapi.core.v3.shared.Summarizable;
 import com.google.common.collect.ImmutableMap;
-import com.github.emm035.openapi.core.v3.servers.Server;
-import org.immutables.value.Value.Derived;
-import org.immutables.value.Value.Immutable;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static org.immutables.value.Value.Check;
+import org.immutables.value.Value.Derived;
+import org.immutables.value.Value.Immutable;
 
 @Immutable
 @OpenApiStyle
 public abstract class AbstractPathItem implements Summarizable, Describable, Extensible {
+
   public abstract List<Server> getServers();
+
   public abstract List<Referenceable<Parameter>> getParameters();
 
   public abstract Optional<Operation> getGet();
+
   public abstract Optional<Operation> getPut();
+
   public abstract Optional<Operation> getPost();
+
   public abstract Optional<Operation> getPatch();
+
   public abstract Optional<Operation> getDelete();
+
   public abstract Optional<Operation> getOptions();
+
   public abstract Optional<Operation> getHead();
+
   public abstract Optional<Operation> getTrace();
 
   @Derived
@@ -56,7 +64,8 @@ public abstract class AbstractPathItem implements Summarizable, Describable, Ext
     if (Checks.allValid(this)) {
       return this;
     }
-    return PathItem.builder()
+    return PathItem
+      .builder()
       .from(this)
       .setExtensions(Checks.validExtensions(this))
       .build();

@@ -5,10 +5,10 @@ import org.immutables.value.Value.Check;
 import org.immutables.value.Value.Default;
 import org.immutables.value.Value.Immutable;
 
-
 @OpenApiStyle
 @Immutable
 public abstract class AbstractBooleanSchema implements TypedSchema {
+
   @Override
   @Default
   public Type getType() {
@@ -20,9 +20,7 @@ public abstract class AbstractBooleanSchema implements TypedSchema {
   }
 
   public static BooleanSchema withDefault(boolean defaultValue) {
-    return BooleanSchema.builder()
-      .setDefault(defaultValue)
-      .build();
+    return BooleanSchema.builder().setDefault(defaultValue).build();
   }
 
   @Check
@@ -30,7 +28,8 @@ public abstract class AbstractBooleanSchema implements TypedSchema {
     if (Checks.allValid(this)) {
       return this;
     }
-    return BooleanSchema.builder()
+    return BooleanSchema
+      .builder()
       .from(this)
       .setExtensions(Checks.validExtensions(this))
       .build();

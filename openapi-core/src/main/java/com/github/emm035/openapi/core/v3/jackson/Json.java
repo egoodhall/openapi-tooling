@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-
 import java.io.IOException;
 
 public class Json {
@@ -30,6 +29,7 @@ public class Json {
   }
 
   public static class MapperFactory {
+
     private MapperFactory() {}
 
     public static ObjectMapper getInstance() {

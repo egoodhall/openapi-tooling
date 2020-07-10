@@ -4,25 +4,27 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.base.CaseFormat;
 import com.github.emm035.openapi.core.v3.shared.OpenApiStyle;
+import com.google.common.base.CaseFormat;
+import java.util.Optional;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Check;
 import org.immutables.value.Value.Derived;
 
-import java.util.Optional;
-
-
 @OpenApiStyle
 @Value.Immutable
 public abstract class AbstractQueryParameter implements Parameter {
+
   @Override
   @Derived
   public Location getIn() {
     return Location.QUERY;
   }
+
   public abstract Optional<Boolean> getRequired();
+
   public abstract Optional<Style> getStyle();
+
   public abstract Optional<Boolean> getExplode();
 
   @Derived
@@ -42,7 +44,9 @@ public abstract class AbstractQueryParameter implements Parameter {
   public boolean getExplodeOrDefault() {
     return getExplode().orElse(true);
   }
+
   public abstract Optional<Boolean> getAllowReserved();
+
   public abstract Optional<Boolean> getAllowEmptyValue();
 
   public static enum Style {
@@ -68,7 +72,8 @@ public abstract class AbstractQueryParameter implements Parameter {
     if (Checks.allValid(this)) {
       return this;
     }
-    return QueryParameter.builder()
+    return QueryParameter
+      .builder()
       .from(this)
       .setExtensions(Checks.validExtensions(this))
       .build();

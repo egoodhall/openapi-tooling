@@ -1,8 +1,8 @@
 package com.github.emm035.openapi.core.v3.servers;
 
-import com.github.emm035.openapi.core.v3.BasicJsonTest;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.github.emm035.openapi.core.v3.BasicJsonTest;
 
 public class ServerVariableTest extends BasicJsonTest<ServerVariable> {
 
@@ -13,7 +13,8 @@ public class ServerVariableTest extends BasicJsonTest<ServerVariable> {
 
   @Override
   public ServerVariable getInstance() {
-    return ServerVariable.builder()
+    return ServerVariable
+      .builder()
       .setDefault("app")
       .addEnum("app", "build", "test")
       .setDescription("The environment to call")

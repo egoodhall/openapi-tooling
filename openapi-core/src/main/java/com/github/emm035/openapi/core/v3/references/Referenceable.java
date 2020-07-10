@@ -16,6 +16,8 @@ public interface Referenceable<T extends Referenceable<T>> {
     if (isReferential() && clazz.isAssignableFrom(this.getClass())) {
       return clazz.cast(this);
     }
-    throw new IllegalStateException("Unable to cast " + getClass().getSimpleName() + " to " + clazz.getSimpleName());
+    throw new IllegalStateException(
+      "Unable to cast " + getClass().getSimpleName() + " to " + clazz.getSimpleName()
+    );
   }
 }

@@ -13,6 +13,7 @@ import org.immutables.value.Value.Immutable;
 public abstract class AbstractApiKeyScheme implements SecurityScheme {
 
   public abstract String getName();
+
   public abstract Location getIn();
 
   @Value.Derived
@@ -42,7 +43,8 @@ public abstract class AbstractApiKeyScheme implements SecurityScheme {
     if (Checks.allValid(this)) {
       return this;
     }
-    return ApiKeyScheme.builder()
+    return ApiKeyScheme
+      .builder()
       .from(this)
       .setExtensions(Checks.validExtensions(this))
       .build();

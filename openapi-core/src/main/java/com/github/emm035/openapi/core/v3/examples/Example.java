@@ -7,6 +7,5 @@ import com.github.emm035.openapi.core.v3.shared.Extensible;
 import com.github.emm035.openapi.core.v3.shared.Summarizable;
 
 @JsonDeserialize
-public interface Example extends Summarizable, Describable, Extensible, Referenceable<Example> {
-
-}
+public interface Example
+  extends Summarizable, Describable, Extensible, Referenceable<Example> {}

@@ -3,18 +3,17 @@ package com.github.emm035.openapi.core.v3.schemas;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.base.CaseFormat;
 import com.github.emm035.openapi.core.v3.shared.OpenApiStyle;
+import com.google.common.base.CaseFormat;
+import java.util.Optional;
 import org.immutables.value.Value.Check;
 import org.immutables.value.Value.Derived;
 import org.immutables.value.Value.Immutable;
 
-import java.util.Optional;
-
-
 @OpenApiStyle
 @Immutable
 public abstract class AbstractNumberSchema implements NumericSchema<Double> {
+
   @Override
   @Derived
   public Type getType() {
@@ -44,7 +43,8 @@ public abstract class AbstractNumberSchema implements NumericSchema<Double> {
     if (Checks.allValid(this)) {
       return this;
     }
-    return NumberSchema.builder()
+    return NumberSchema
+      .builder()
       .from(this)
       .setExtensions(Checks.validExtensions(this))
       .build();

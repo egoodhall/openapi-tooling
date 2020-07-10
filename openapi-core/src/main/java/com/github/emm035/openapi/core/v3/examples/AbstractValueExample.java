@@ -9,6 +9,7 @@ import org.immutables.value.Value.Immutable;
 @OpenApiStyle
 @JsonDeserialize
 public abstract class AbstractValueExample implements Example {
+
   public abstract Object getValue();
 
   @Check
@@ -16,7 +17,8 @@ public abstract class AbstractValueExample implements Example {
     if (Checks.allValid(this)) {
       return this;
     }
-    return ValueExample.builder()
+    return ValueExample
+      .builder()
       .from(this)
       .setExtensions(Checks.validExtensions(this))
       .build();

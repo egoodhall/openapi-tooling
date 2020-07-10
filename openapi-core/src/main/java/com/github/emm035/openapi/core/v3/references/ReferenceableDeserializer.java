@@ -10,15 +10,16 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-
 import java.io.IOException;
 
-public class ReferenceableDeserializer<T extends Referenceable<T>> extends JsonDeserializer<Referenceable<T>> implements ContextualDeserializer {
-
+public class ReferenceableDeserializer<T extends Referenceable<T>>
+  extends JsonDeserializer<Referenceable<T>>
+  implements ContextualDeserializer {
   private JavaType valueType;
 
   @Override
-  public Referenceable<T> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+  public Referenceable<T> deserialize(JsonParser p, DeserializationContext ctxt)
+    throws IOException, JsonProcessingException {
     ObjectMapper mapper = (ObjectMapper) p.getCodec();
     JsonNode jsonNode = mapper.readTree(p);
     if (jsonNode.path("$ref").isTextual()) {
@@ -29,7 +30,11 @@ public class ReferenceableDeserializer<T extends Referenceable<T>> extends JsonD
   }
 
   @Override
-  public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
+  public JsonDeserializer<?> createContextual(
+    DeserializationContext ctxt,
+    BeanProperty property
+  )
+    throws JsonMappingException {
     ReferenceableDeserializer<?> deser = new ReferenceableDeserializer<>();
     deser.valueType = ctxt.getContextualType().getBindings().getBoundType(0);
     return deser;

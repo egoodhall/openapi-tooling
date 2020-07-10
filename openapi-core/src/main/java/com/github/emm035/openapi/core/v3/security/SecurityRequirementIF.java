@@ -3,9 +3,8 @@ package com.github.emm035.openapi.core.v3.security;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.emm035.openapi.core.v3.shared.OpenApiStyle;
-import org.immutables.value.Value.Immutable;
-
 import java.util.List;
+import org.immutables.value.Value.Immutable;
 
 @Immutable
 @OpenApiStyle

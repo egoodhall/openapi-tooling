@@ -223,7 +223,6 @@
   </build>
 
   <profiles>
-
     <profile>
       <id>deploy-oss</id>
       <build>
@@ -291,6 +290,6 @@
         <plugin.sortpom.goal>verify</plugin.sortpom.goal>
       </properties>
     </profile>
-
   </profiles>
+
 </project>

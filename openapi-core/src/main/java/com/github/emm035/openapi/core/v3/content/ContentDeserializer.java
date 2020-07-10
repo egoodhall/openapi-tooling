@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -17,7 +16,8 @@ class ContentDeserializer extends StdDeserializer<Content> {
   }
 
   @Override
-  public Content deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+  public Content deserialize(JsonParser p, DeserializationContext ctxt)
+    throws IOException, JsonProcessingException {
     Content.Builder builder = Content.builder();
 
     ObjectMapper mapper = (ObjectMapper) p.getCodec();
@@ -25,9 +25,15 @@ class ContentDeserializer extends StdDeserializer<Content> {
     for (Iterator<String> iter = node.fieldNames(); iter.hasNext();) {
       String fieldName = iter.next();
       if (fieldName.startsWith("x-")) {
-        builder.putExtensions(fieldName, mapper.treeToValue(node.get(fieldName), Object.class));
+        builder.putExtensions(
+          fieldName,
+          mapper.treeToValue(node.get(fieldName), Object.class)
+        );
       } else {
-        builder.putMediaTypes(fieldName, mapper.treeToValue(node.get(fieldName), MediaType.class));
+        builder.putMediaTypes(
+          fieldName,
+          mapper.treeToValue(node.get(fieldName), MediaType.class)
+        );
       }
     }
 

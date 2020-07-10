@@ -7,19 +7,20 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-
 import java.io.IOException;
 import java.util.Map;
 
 class ExampleDeserializer extends JsonDeserializer<Example> {
-
   private static final Map<String, Class<? extends Example>> MAPPINGS = ImmutableMap.of(
-    "value", ValueExample.class,
-    "externalValue", ExternalExample.class
+    "value",
+    ValueExample.class,
+    "externalValue",
+    ExternalExample.class
   );
 
   @Override
-  public Example deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+  public Example deserialize(JsonParser p, DeserializationContext ctxt)
+    throws IOException, JsonProcessingException {
     ObjectMapper mapper = (ObjectMapper) p.getCodec();
     JsonNode node = mapper.readTree(p);
 
@@ -29,6 +30,9 @@ class ExampleDeserializer extends JsonDeserializer<Example> {
     if (node.has("externalValue")) {
       return mapper.treeToValue(node, ExternalExample.class);
     }
-    throw ctxt.instantiationException(Example.class, "Unable to instantiate any example type from " + node.toString());
+    throw ctxt.instantiationException(
+      Example.class,
+      "Unable to instantiate any example type from " + node.toString()
+    );
   }
 }

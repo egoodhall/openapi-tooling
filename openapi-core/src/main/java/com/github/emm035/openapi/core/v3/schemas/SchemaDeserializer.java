@@ -8,12 +8,13 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 
 class SchemaDeserializer extends JsonDeserializer<Schema> {
+
   @Override
-  public Schema deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+  public Schema deserialize(JsonParser p, DeserializationContext ctxt)
+    throws IOException, JsonProcessingException {
     ObjectMapper mapper = (ObjectMapper) p.getCodec();
     JsonNode node = mapper.readTree(p);
     JsonParser tokens = mapper.treeAsTokens(node);
@@ -21,7 +22,11 @@ class SchemaDeserializer extends JsonDeserializer<Schema> {
     return (Schema) resolveDeserializer(ctxt, node).deserialize(tokens, ctxt);
   }
 
-  private JsonDeserializer<?> resolveDeserializer(DeserializationContext ctxt, JsonNode node) throws JsonMappingException {
+  private JsonDeserializer<?> resolveDeserializer(
+    DeserializationContext ctxt,
+    JsonNode node
+  )
+    throws JsonMappingException {
     if (node.has("allOf")) {
       JavaType type = ctxt.getTypeFactory().constructType(AllOfSchema.class);
       return ctxt.findRootValueDeserializer(type);

@@ -1,5 +1,7 @@
 package com.github.emm035.openapi.core.v3.parameters;
 
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -13,21 +15,25 @@ import com.github.emm035.openapi.core.v3.shared.Deprecatable;
 import com.github.emm035.openapi.core.v3.shared.Describable;
 import com.github.emm035.openapi.core.v3.shared.Extensible;
 import com.github.emm035.openapi.core.v3.shared.WithMultipleExamples;
-
 import java.util.Optional;
 
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
-
 @JsonTypeInfo(use = NAME, property = "in")
-@JsonSubTypes({
-  @Type(value = PathParameter.class, name = "path"),
-  @Type(value = QueryParameter.class, name = "query"),
-  @Type(value = HeaderParameter.class, name = "header"),
-  @Type(value = CookieParameter.class, name = "cookie")
-})
+@JsonSubTypes(
+  {
+    @Type(value = PathParameter.class, name = "path"),
+    @Type(value = QueryParameter.class, name = "query"),
+    @Type(value = HeaderParameter.class, name = "header"),
+    @Type(value = CookieParameter.class, name = "cookie")
+  }
+)
 @JsonDeserialize
-public interface Parameter extends WithMultipleExamples, Deprecatable, Describable, Extensible, Referenceable<Parameter> {
-
+public interface Parameter
+  extends
+    WithMultipleExamples,
+    Deprecatable,
+    Describable,
+    Extensible,
+    Referenceable<Parameter> {
   Location getIn();
   String getName();
   Optional<Boolean> getRequired();

@@ -19,7 +19,8 @@ public abstract class AbstractOpenIdConnectScheme implements SecurityScheme {
     if (Checks.allValid(this)) {
       return this;
     }
-    return OpenIdConnectScheme.builder()
+    return OpenIdConnectScheme
+      .builder()
       .from(this)
       .setExtensions(Checks.validExtensions(this))
       .build();

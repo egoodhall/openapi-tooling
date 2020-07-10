@@ -1,21 +1,20 @@
 package com.github.emm035.openapi.core.v3.parameters;
 
+import static org.immutables.value.Value.Check;
+import static org.immutables.value.Value.Derived;
+import static org.immutables.value.Value.Immutable;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.github.emm035.openapi.core.v3.shared.OpenApiStyle;
-
 import java.util.Optional;
-
-import static org.immutables.value.Value.Check;
-import static org.immutables.value.Value.Derived;
-import static org.immutables.value.Value.Immutable;
-
 
 @OpenApiStyle
 @Immutable
 public abstract class AbstractHeaderParameter implements Parameter {
+
   @Override
   @Derived
   public Location getIn() {
@@ -23,7 +22,9 @@ public abstract class AbstractHeaderParameter implements Parameter {
   }
 
   public abstract Optional<Boolean> getRequired();
+
   public abstract Optional<Style> getStyle();
+
   public abstract Optional<Boolean> getExplode();
 
   @Derived
@@ -64,7 +65,8 @@ public abstract class AbstractHeaderParameter implements Parameter {
     if (Checks.allValid(this)) {
       return this;
     }
-    return HeaderParameter.builder()
+    return HeaderParameter
+      .builder()
       .from(this)
       .setExtensions(Checks.validExtensions(this))
       .build();
