@@ -1,0 +1,18 @@
+{
+  "title": "Example API",
+  "version": "v1",
+  "description": "This is the example API",
+  "termsOfService": "TOS",
+  "contact": {
+    "name": "Robert Tables",
+    "email": "little.bobby@tables.com",
+    "url": "https://example.com/contact",
+    "x-contact": "test"
+  },
+  "license": {
+    "name": "MIT",
+    "url": "https://example.com/license",
+    "x-license": "test"
+  },
+  "x-info": "test"
+}

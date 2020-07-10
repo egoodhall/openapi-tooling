@@ -1,0 +1,5 @@
+{
+  "description": "Some external docs",
+  "url": "https://example.com/docs",
+  "x-external-docs": "test"
+}

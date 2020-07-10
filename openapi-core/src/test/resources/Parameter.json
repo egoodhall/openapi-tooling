@@ -1,0 +1,7 @@
+{
+    "in": "cookie",
+    "name": "test",
+    "schema": {
+        "type": "string"
+    }
+}

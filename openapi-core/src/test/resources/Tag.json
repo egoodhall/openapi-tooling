@@ -1,0 +1,10 @@
+{
+  "name": "My Tag",
+  "description": "This is a tag",
+  "externalDocs": {
+    "description": "Some external docs",
+    "url": "https://example.com/docs",
+    "x-external-docs": "test"
+  },
+  "x-tag": "test"
+}

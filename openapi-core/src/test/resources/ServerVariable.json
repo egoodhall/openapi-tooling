@@ -1,0 +1,10 @@
+{
+  "enum": [
+    "app",
+    "build",
+    "test"
+  ],
+  "default": "app",
+  "description": "The environment to call",
+  "x-server-variable": "test"
+}
