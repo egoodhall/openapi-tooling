@@ -1,10 +1,10 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Build
+name: Build & Deploy Snapshot
 
 on:
   push:
+    paths:
+      - '**/*.java'
+      - '**/pom.xml'
 
 jobs:
   build:
