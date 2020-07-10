@@ -1,42 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <packaging>pom</packaging>
 
   <groupId>com.github.emm035</groupId>
   <artifactId>openapi-tooling-parent</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <name>OpenAPI Tooling</name>
   <description>Tools for working with OpenAPI in Java</description>
   <url>https://github.com/emm035/openapi-tooling</url>
 
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Eric Marshall</name>
+      <email>ericmarshall715@gmail.com</email>
+    </developer>
+  </developers>
+
+  <modules>
+    <module>openapi-core</module>
+  </modules>
+
+  <scm>
+    <connection>scm:git:git@github.com:emm035/openapi-tooling.git</connection>
+    <developerConnection>scm:git:git@github.com:emm035/openapi-tooling.git</developerConnection>
+    <url>git@github.com:emm035/openapi-tooling.git</url>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>sonatype-oss</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+    <snapshotRepository>
+      <id>sonatype-oss</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <properties>
-    <dep.jackson.version>2.9.10</dep.jackson.version>
-    <dep.jackson-databind.version>2.9.10.3</dep.jackson-databind.version>
-    <dep.jsr305.version>3.0.1</dep.jsr305.version>
+    <dep.assertj.version>3.4.1</dep.assertj.version>
+    <dep.guava.version>28.2-jre</dep.guava.version>
     <dep.guice.version>4.2.3</dep.guice.version>
     <dep.immutables.version>2.8.3</dep.immutables.version>
+    <dep.jackson-databind.version>2.9.10.5</dep.jackson-databind.version>
+    <dep.jackson.version>2.9.10</dep.jackson.version>
+    <dep.jsr305.version>3.0.1</dep.jsr305.version>
     <dep.junit.version>4.12</dep.junit.version>
-    <dep.guava.version>28.2-jre</dep.guava.version>
     <dep.zjsonpatch.version>0.4.9</dep.zjsonpatch.version>
-    <dep.assertj.version>3.4.1</dep.assertj.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>com.fasterxml.jackson.datatype</groupId>
-        <artifactId>jackson-datatype-guava</artifactId>
-        <version>${dep.jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${dep.jackson-databind.version}</version>
-      </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
@@ -48,6 +71,16 @@
         <version>${dep.jackson.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${dep.jackson-databind.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-guava</artifactId>
+        <version>${dep.jackson.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-jdk8</artifactId>
         <version>${dep.jackson.version}</version>
@@ -56,6 +89,11 @@
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-jsr310</artifactId>
         <version>${dep.jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.flipkart.zjsonpatch</groupId>
+        <artifactId>zjsonpatch</artifactId>
+        <version>${dep.zjsonpatch.version}</version>
       </dependency>
       <dependency>
         <groupId>com.github.emm035</groupId>
@@ -88,9 +126,9 @@
         <version>${dep.guice.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.immutables</groupId>
-        <artifactId>value</artifactId>
-        <version>${dep.immutables.version}</version>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${dep.junit.version}</version>
       </dependency>
 
       <dependency>
@@ -99,21 +137,12 @@
         <version>${dep.assertj.version}</version>
       </dependency>
       <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${dep.junit.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.flipkart.zjsonpatch</groupId>
-        <artifactId>zjsonpatch</artifactId>
-        <version>${dep.zjsonpatch.version}</version>
+        <groupId>org.immutables</groupId>
+        <artifactId>value</artifactId>
+        <version>${dep.immutables.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <modules>
-    <module>openapi-core</module>
-  </modules>
 
   <build>
     <pluginManagement>
@@ -143,21 +172,21 @@
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.6</version>
-          <configuration>
-            <encoding>UTF-8</encoding>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.1</version>
           <configuration>
             <encoding>UTF-8</encoding>
             <source>11</source>
             <target>11</target>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
 
@@ -169,44 +198,8 @@
 
     <profile>
       <id>deploy-oss</id>
-      <properties>
-        <!--suppress UnresolvedMavenProperty -->
-        <gpg.keyname>${env.SIGNING_KEY_NAME}</gpg.keyname>
-        <!--suppress UnresolvedMavenProperty -->
-        <gpg.passphrase>${env.SIGNING_KEY_PWD}</gpg.passphrase>
-      </properties>
       <build>
         <plugins>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>3.0.1</version>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.0</version>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
 
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -229,40 +222,45 @@
             </executions>
           </plugin>
 
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.0.1</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
         </plugins>
       </build>
+      <properties>
+        <!--suppress UnresolvedMavenProperty -->
+        <gpg.keyname>${env.SIGNING_KEY_NAME}</gpg.keyname>
+        <!--suppress UnresolvedMavenProperty -->
+        <gpg.passphrase>${env.SIGNING_KEY_PWD}</gpg.passphrase>
+      </properties>
     </profile>
 
   </profiles>
-
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-    </license>
-  </licenses>
-
-  <developers>
-    <developer>
-      <name>Eric Marshall</name>
-      <email>ericmarshall715@gmail.com</email>
-    </developer>
-  </developers>
-
-  <scm>
-    <connection>scm:git:git@github.com:emm035/openapi-tooling.git</connection>
-    <developerConnection>scm:git:git@github.com:emm035/openapi-tooling.git</developerConnection>
-    <url>git@github.com:emm035/openapi-tooling.git</url>
-  </scm>
-
-  <distributionManagement>
-    <repository>
-      <id>sonatype-oss</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-    <snapshotRepository>
-      <id>sonatype-oss</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
 </project>

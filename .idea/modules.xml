@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/openapi-core/openapi-core.iml" filepath="$PROJECT_DIR$/openapi-core/openapi-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/openapi-schema-generator/openapi-schema-generator.iml" filepath="$PROJECT_DIR$/openapi-schema-generator/openapi-schema-generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/openapi-tooling.iml" filepath="$PROJECT_DIR$/.idea/openapi-tooling.iml" />
+      <module fileurl="file://$PROJECT_DIR$/openapi-tooling-parent.iml" filepath="$PROJECT_DIR$/openapi-tooling-parent.iml" />
+    </modules>
+  </component>
+</project>
