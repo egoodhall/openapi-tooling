@@ -1,4 +1,4 @@
-package com.github.emm035.openapi.schema.generator.assisted;
+package com.github.emm035.openapi.schema.generator.annotations;
 
 import com.google.inject.BindingAnnotation;
 import java.lang.annotation.Retention;

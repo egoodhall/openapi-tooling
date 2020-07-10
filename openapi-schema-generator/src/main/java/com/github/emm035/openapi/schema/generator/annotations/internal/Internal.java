@@ -1,4 +1,4 @@
-package com.github.emm035.openapi.schema.generator.annotations;
+package com.github.emm035.openapi.schema.generator.annotations.internal;
 
 import com.google.inject.BindingAnnotation;
 import java.lang.annotation.ElementType;

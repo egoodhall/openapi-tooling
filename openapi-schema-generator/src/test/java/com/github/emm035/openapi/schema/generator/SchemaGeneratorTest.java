@@ -14,13 +14,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SchemaGeneratorTest {
-  private static final ObjectMapper CUSTOM_OBJECT_MAPPER = new ObjectMapper()
-    .registerModule(new Jdk8Module())
-    .registerModule(new JavaTimeModule());
-
   private static final SchemaGenerator SCHEMA_GRAPH = SchemaGenerator
     .builder()
-    .setObjectMapper(CUSTOM_OBJECT_MAPPER)
+    .withCachedThreadPool()
+    .withDefaultObjectMapper()
     .addModules(new TestModule())
     .build();
 

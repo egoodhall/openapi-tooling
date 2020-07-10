@@ -1,6 +1,6 @@
 package com.github.emm035.openapi.schema.generator;
 
-import com.github.emm035.openapi.schema.generator.assisted.Extension;
+import com.github.emm035.openapi.schema.generator.annotations.Extension;
 import com.github.emm035.openapi.schema.generator.base.TypeUtils;
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;

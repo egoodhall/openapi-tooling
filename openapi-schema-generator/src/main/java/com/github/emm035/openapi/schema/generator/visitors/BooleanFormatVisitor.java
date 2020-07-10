@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonBooleanFormatVisito
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.BooleanSchema;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
-import com.github.emm035.openapi.schema.generator.assisted.Extension;
+import com.github.emm035.openapi.schema.generator.annotations.Extension;
 import com.github.emm035.openapi.schema.generator.base.Generator;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
 import com.google.inject.Inject;

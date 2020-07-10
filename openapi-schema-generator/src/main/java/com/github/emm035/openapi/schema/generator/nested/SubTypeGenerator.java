@@ -1,4 +1,4 @@
-package com.github.emm035.openapi.schema.generator.assisted;
+package com.github.emm035.openapi.schema.generator.nested;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -7,7 +7,9 @@ import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.AllOfSchema;
 import com.github.emm035.openapi.core.v3.schemas.ObjectSchema;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
-import com.github.emm035.openapi.schema.generator.annotations.Internal;
+import com.github.emm035.openapi.schema.generator.annotations.Extension;
+import com.github.emm035.openapi.schema.generator.annotations.internal.Internal;
+import com.github.emm035.openapi.schema.generator.assisted.RefFactory;
 import com.github.emm035.openapi.schema.generator.base.Schemas;
 import com.github.emm035.openapi.schema.generator.base.TypeUtils;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;

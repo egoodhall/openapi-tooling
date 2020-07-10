@@ -7,14 +7,14 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.ObjectSchema;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
-import com.github.emm035.openapi.schema.generator.assisted.Extension;
-import com.github.emm035.openapi.schema.generator.assisted.NestedSchemaGenerator;
+import com.github.emm035.openapi.schema.generator.annotations.Extension;
 import com.github.emm035.openapi.schema.generator.assisted.RefFactory;
 import com.github.emm035.openapi.schema.generator.base.Generator;
 import com.github.emm035.openapi.schema.generator.base.Schemas;
 import com.github.emm035.openapi.schema.generator.base.TypeUtils;
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
+import com.github.emm035.openapi.schema.generator.nested.NestedSchemaGenerator;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -32,9 +32,9 @@ public class ObjectFormatVisitor
   @Inject
   public ObjectFormatVisitor(
     @Assisted JavaType javaType,
-    Schemas schemas,
     @Extension SchemaExtension schemaExtension,
     @Extension PropertyExtension propertyExtension,
+    Schemas schemas,
     RefFactory refFactory,
     NestedSchemaGenerator nestedSchemaGenerator
   ) {
