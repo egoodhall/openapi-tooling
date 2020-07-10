@@ -15,7 +15,7 @@
 
   <properties>
     <dep.jackson.version>2.9.10</dep.jackson.version>
-    <dep.jackson-databind.version>2.9.10.3</dep.jackson-databind.version>
+    <dep.jackson-databind.version>2.9.10.5</dep.jackson-databind.version>
     <dep.jsr305.version>3.0.1</dep.jsr305.version>
     <dep.guice.version>4.2.3</dep.guice.version>
     <dep.immutables.version>2.8.3</dep.immutables.version>
