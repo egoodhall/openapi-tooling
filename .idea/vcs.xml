@@ -2,7 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/openapi-core" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/openapi-models" vcs="Git" />
   </component>
 </project>
