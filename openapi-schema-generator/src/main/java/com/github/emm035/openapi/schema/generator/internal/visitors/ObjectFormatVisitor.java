@@ -1,4 +1,4 @@
-package com.github.emm035.openapi.schema.generator.visitors;
+package com.github.emm035.openapi.schema.generator.internal.visitors;
 
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
@@ -8,13 +8,13 @@ import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.ObjectSchema;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.annotations.Extension;
-import com.github.emm035.openapi.schema.generator.assisted.RefFactory;
-import com.github.emm035.openapi.schema.generator.base.Generator;
-import com.github.emm035.openapi.schema.generator.base.Schemas;
-import com.github.emm035.openapi.schema.generator.base.TypeUtils;
+import com.github.emm035.openapi.schema.generator.internal.RefFactory;
+import com.github.emm035.openapi.schema.generator.internal.Generator;
+import com.github.emm035.openapi.schema.generator.internal.Schemas;
+import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
-import com.github.emm035.openapi.schema.generator.nested.NestedSchemaGenerator;
+import com.github.emm035.openapi.schema.generator.internal.generators.NestedSchemaGenerator;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

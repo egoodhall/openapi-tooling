@@ -1,4 +1,4 @@
-package com.github.emm035.openapi.schema.generator.exceptions;
+package com.github.emm035.openapi.schema.generator.internal;
 
 public class SchemaGeneratorInternalException extends RuntimeException {
 

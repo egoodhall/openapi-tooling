@@ -1,4 +1,4 @@
-package com.github.emm035.openapi.schema.generator.result;
+package com.github.emm035.openapi.schema.generator;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;

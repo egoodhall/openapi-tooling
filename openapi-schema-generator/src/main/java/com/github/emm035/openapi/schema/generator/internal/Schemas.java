@@ -1,4 +1,4 @@
-package com.github.emm035.openapi.schema.generator.base;
+package com.github.emm035.openapi.schema.generator.internal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,8 +6,6 @@ import com.github.emm035.openapi.core.v3.references.Ref;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.annotations.RefPrefix;
-import com.github.emm035.openapi.schema.generator.annotations.internal.Internal;
-import com.github.emm035.openapi.schema.generator.assisted.RefFactory;
 import com.github.emm035.openapi.schema.generator.exceptions.SchemaGenerationException;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;

@@ -1,12 +1,10 @@
-package com.github.emm035.openapi.schema.generator.assisted;
+package com.github.emm035.openapi.schema.generator.internal;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.emm035.openapi.core.v3.references.Ref;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.annotations.RefPrefix;
-import com.github.emm035.openapi.schema.generator.annotations.internal.Internal;
-import com.github.emm035.openapi.schema.generator.base.TypeUtils;
 import com.google.inject.Inject;
 import java.util.regex.Pattern;
 

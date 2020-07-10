@@ -8,13 +8,12 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.emm035.openapi.core.v3.jackson.Json;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
-import com.github.emm035.openapi.schema.generator.annotations.internal.Internal;
-import com.github.emm035.openapi.schema.generator.assisted.RefFactory;
-import com.github.emm035.openapi.schema.generator.base.Schemas;
-import com.github.emm035.openapi.schema.generator.base.TypeUtils;
+import com.github.emm035.openapi.schema.generator.internal.Internal;
+import com.github.emm035.openapi.schema.generator.internal.RefFactory;
+import com.github.emm035.openapi.schema.generator.internal.Schemas;
+import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
 import com.github.emm035.openapi.schema.generator.exceptions.SchemaGenerationException;
-import com.github.emm035.openapi.schema.generator.result.SchemaResult;
-import com.github.emm035.openapi.schema.generator.visitors.SchemaGeneratorVisitorWrapper;
+import com.github.emm035.openapi.schema.generator.internal.visitors.SchemaGeneratorVisitorWrapper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -28,7 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public class SchemaGeneratorImpl implements SchemaGenerator {
+class SchemaGeneratorImpl implements SchemaGenerator {
   private final ObjectMapper objectMapper;
   private final TypeFactory typeFactory;
   private final Map<String, Schema> schemaMap;

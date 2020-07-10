@@ -1,4 +1,4 @@
-package com.github.emm035.openapi.schema.generator.visitors;
+package com.github.emm035.openapi.schema.generator.internal.visitors;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JavaType;
@@ -10,7 +10,7 @@ import com.github.emm035.openapi.core.v3.schemas.NumberSchema;
 import com.github.emm035.openapi.core.v3.schemas.NumericSchema;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.annotations.Extension;
-import com.github.emm035.openapi.schema.generator.base.Generator;
+import com.github.emm035.openapi.schema.generator.internal.Generator;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;

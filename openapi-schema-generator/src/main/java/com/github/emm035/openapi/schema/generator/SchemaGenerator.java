@@ -7,12 +7,9 @@ import com.github.emm035.openapi.core.v3.jackson.Json;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.exceptions.SchemaGenerationException;
-import com.github.emm035.openapi.schema.generator.result.SchemaResult;
 import com.google.inject.Module;
 import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public interface SchemaGenerator {
   Referenceable<Schema> generateSchema(Type type) throws SchemaGenerationException;

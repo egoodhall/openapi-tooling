@@ -1,4 +1,4 @@
-package com.github.emm035.openapi.schema.generator.base;
+package com.github.emm035.openapi.schema.generator.internal;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

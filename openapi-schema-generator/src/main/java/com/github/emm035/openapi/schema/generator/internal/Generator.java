@@ -1,4 +1,4 @@
-package com.github.emm035.openapi.schema.generator.base;
+package com.github.emm035.openapi.schema.generator.internal;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
