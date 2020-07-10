@@ -1,3 +1,4 @@
+---
 name: Build
 
 on:
@@ -5,45 +6,46 @@ on:
     paths:
       - '**/*.java'
       - '**/pom.xml'
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
 
-    - uses: actions/checkout@v2
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-    - uses: actions/cache@v1
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
 
-    - name: Set up JDK 11
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
+      - name: Set snapshot version
+        id: snapshot_version
+        shell: bash
+        run: |
+          version="$(.deploy/scripts/get_snapshot_version.sh)"
+          .deploy/scripts/set_version.sh $version
 
-    - name: Set snapshot version
-      id: snapshot_version
-      shell: bash
-      run: |
-        version="$(.deploy/scripts/get_snapshot_version.sh)"
-        .deploy/scripts/set_version.sh $version
+      - name: Set up GPG keys
+        shell: bash
+        run: |
+          echo $GPG_KEY | base64 --decode | gpg --batch --import --no-tty
+        env:
+          GPG_KEY: ${{ secrets.GPG_KEY }}
 
-    - name: Set up GPG keys
-      shell: bash
-      run: |
-        echo $GPG_KEY | base64 --decode | gpg --batch --import --no-tty
-      env:
-        GPG_KEY: ${{ secrets.GPG_KEY }}
-
-    - name: Build & deploy snapshot
-      if: success()
-      run: mvn deploy -B -Pdeploy-oss --settings=.deploy/settings.xml
-      env:
-        SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-        SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-        SIGNING_KEY_PWD: ${{ secrets.GPG_KEY_PASSPHRASE }}
-        SIGNING_KEY_NAME: ${{ secrets.GPG_KEY_NAME }}
+      - name: Build & deploy snapshot
+        if: success()
+        run: mvn deploy -B -Pdeploy-oss --settings=.deploy/settings.xml
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          SIGNING_KEY_PWD: ${{ secrets.GPG_KEY_PASSPHRASE }}
+          SIGNING_KEY_NAME: ${{ secrets.GPG_KEY_NAME }}
