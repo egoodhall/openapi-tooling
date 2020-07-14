@@ -10,8 +10,8 @@ import com.github.emm035.openapi.core.v3.schemas.NumberSchema;
 import com.github.emm035.openapi.core.v3.schemas.NumericSchema;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.annotations.Extension;
-import com.github.emm035.openapi.schema.generator.internal.Generator;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
+import com.github.emm035.openapi.schema.generator.internal.Generator;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import java.util.Optional;
@@ -44,6 +44,7 @@ public class NumberFormatVisitor
       case DOUBLE:
       case BIG_DECIMAL:
         schema = buildNumberSchema(type);
+        break;
     }
   }
 
@@ -56,6 +57,7 @@ public class NumberFormatVisitor
       case LONG:
       case BIG_INTEGER:
         format = IntegerSchema.Format.INT64;
+        break;
       default:
         throw new IllegalArgumentException(
           "Invalid format " + type + " for integer schema"
@@ -73,9 +75,10 @@ public class NumberFormatVisitor
       case DOUBLE:
       case BIG_DECIMAL:
         format = NumberSchema.Format.DOUBLE;
+        break;
       default:
         throw new IllegalArgumentException(
-          "Invalid format " + type + " for integer schema"
+          "Invalid format " + type + " for number schema"
         );
     }
     return NumberSchema.builder().setFormat(format).build();

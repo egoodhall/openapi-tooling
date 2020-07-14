@@ -19,26 +19,19 @@ public interface SchemaGenerator {
   SchemaResult resolveWithDependencies(Referenceable<Schema> schema)
     throws SchemaGenerationException;
   Schema resolve(Referenceable<Schema> schema) throws SchemaGenerationException;
-  Map<String, Schema> getAllSchemas();
+  Map<String, Schema> getCachedSchemas();
   void clearCachedSchemas();
 
-  static SchemaGenerator newDefaultInstance() {
-    return builder().withDefaultObjectMapper().build();
+  static SchemaGenerator newInstance() {
+    return builder().build();
   }
 
-  static BuilderNeedsObjectMapper builder() {
+  static Builder builder() {
     return new SchemaGeneratorImpl.BuilderImpl();
   }
 
-  interface BuilderNeedsObjectMapper {
-    Builder setObjectMapper(ObjectMapper objectMapper);
-
-    default Builder withDefaultObjectMapper() {
-      return setObjectMapper(Json.MapperFactory.getInstance());
-    }
-  }
-
   interface Builder {
+    Builder setObjectMapper(ObjectMapper objectMapper);
     Builder overrideSchemas(Map<String, Schema> defaultSchemas);
     Builder overrideSchema(String typeName, Schema schema);
     Builder addModules(Module... modules);

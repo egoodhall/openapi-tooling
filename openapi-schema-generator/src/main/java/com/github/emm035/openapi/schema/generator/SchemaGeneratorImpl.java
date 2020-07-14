@@ -8,11 +8,11 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.emm035.openapi.core.v3.jackson.Json;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
+import com.github.emm035.openapi.schema.generator.exceptions.SchemaGenerationException;
 import com.github.emm035.openapi.schema.generator.internal.Internal;
 import com.github.emm035.openapi.schema.generator.internal.RefFactory;
 import com.github.emm035.openapi.schema.generator.internal.Schemas;
 import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
-import com.github.emm035.openapi.schema.generator.exceptions.SchemaGenerationException;
 import com.github.emm035.openapi.schema.generator.internal.visitors.SchemaGeneratorVisitorWrapper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -94,15 +94,14 @@ class SchemaGeneratorImpl implements SchemaGenerator {
     schemaMap.clear();
   }
 
-  public Map<String, Schema> getAllSchemas() {
+  public Map<String, Schema> getCachedSchemas() {
     return schemaMap;
   }
 
   /**
    * Builder implementation
    */
-  static class BuilderImpl implements BuilderNeedsObjectMapper, Builder {
-    private boolean built = false;
+  static class BuilderImpl implements Builder {
     private final Set<Module> modules = Sets.newLinkedHashSet();
     private Optional<ObjectMapper> objectMapper = Optional.empty();
     private ImmutableMap.Builder<String, Schema> defaultSchemas = ImmutableMap.builder();
@@ -142,11 +141,6 @@ class SchemaGeneratorImpl implements SchemaGenerator {
     }
 
     public SchemaGenerator build() {
-      Preconditions.checkState(
-        !built,
-        "This builder has already been consumed. Don't reuse builders."
-      );
-      built = true;
       return Guice.createInjector(buildModule()).getInstance(SchemaGeneratorImpl.class);
     }
   }

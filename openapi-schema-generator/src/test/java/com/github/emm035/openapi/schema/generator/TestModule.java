@@ -1,9 +1,9 @@
 package com.github.emm035.openapi.schema.generator;
 
 import com.github.emm035.openapi.schema.generator.annotations.Extension;
-import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
+import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
 import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.Module;

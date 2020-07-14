@@ -13,9 +13,9 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonStringFormatVisitor
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.internal.Generator;
+import com.github.emm035.openapi.schema.generator.internal.SchemaGeneratorInternalException;
 import com.github.emm035.openapi.schema.generator.internal.Schemas;
 import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
-import com.github.emm035.openapi.schema.generator.internal.SchemaGeneratorInternalException;
 import com.github.emm035.openapi.schema.generator.internal.generators.SubTypeGenerator;
 import com.google.inject.Inject;
 
