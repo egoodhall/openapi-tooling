@@ -18,7 +18,6 @@ import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
 import com.github.emm035.openapi.schema.generator.internal.generators.NestedSchemaGenerator;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import java.util.Optional;
 
 public class ObjectFormatVisitor
@@ -81,7 +80,10 @@ public class ObjectFormatVisitor
   }
 
   private String getPropertyName(BeanProperty prop) {
-    return Optional.ofNullable(prop.getAnnotation(SchemaProperty.class)).map(SchemaProperty::value).orElseGet(prop::getName);
+    return Optional
+      .ofNullable(prop.getAnnotation(SchemaProperty.class))
+      .map(SchemaProperty::value)
+      .orElseGet(prop::getName);
   }
 
   //===============//

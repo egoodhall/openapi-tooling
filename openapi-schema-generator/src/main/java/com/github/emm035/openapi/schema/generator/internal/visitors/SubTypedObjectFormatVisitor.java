@@ -89,7 +89,10 @@ public class SubTypedObjectFormatVisitor
   }
 
   private String getPropertyName(BeanProperty prop) {
-    return Optional.ofNullable(prop.getAnnotation(SchemaProperty.class)).map(SchemaProperty::value).orElseGet(prop::getName);
+    return Optional
+      .ofNullable(prop.getAnnotation(SchemaProperty.class))
+      .map(SchemaProperty::value)
+      .orElseGet(prop::getName);
   }
 
   //===============//

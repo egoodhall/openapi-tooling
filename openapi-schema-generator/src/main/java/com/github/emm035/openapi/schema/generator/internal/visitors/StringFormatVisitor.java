@@ -29,8 +29,10 @@ public class StringFormatVisitor
   private final SchemaExtension schemaExtension;
 
   @Inject
-  public StringFormatVisitor(@Assisted JavaType javaType,
-                             @Extension SchemaExtension schemaExtension) {
+  public StringFormatVisitor(
+    @Assisted JavaType javaType,
+    @Extension SchemaExtension schemaExtension
+  ) {
     this.javaType = javaType;
     this.schemaExtension = schemaExtension;
     this.stringSchema = StringSchema.builder();

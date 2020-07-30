@@ -46,9 +46,7 @@ public interface SchemaGenerator {
     Builder addModules(Module... modules);
     Builder bindSchemaExtension(Class<? extends SchemaExtension> schemaExtension);
     <T extends SchemaExtension> Builder bindSchemaExtension(T schemaExtension);
-    Builder bindPropertyExtension(
-      Class<? extends PropertyExtension> propertyExtension
-    );
+    Builder bindPropertyExtension(Class<? extends PropertyExtension> propertyExtension);
     <T extends PropertyExtension> Builder bindPropertyExtension(T propertyExtension);
     SchemaGenerator build();
   }

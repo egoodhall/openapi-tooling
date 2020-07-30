@@ -135,15 +135,15 @@ class SchemaGeneratorImpl implements SchemaGenerator {
     }
 
     @Override
-    public Builder bindSchemaExtension(
-      Class<? extends SchemaExtension> schemaExtension
-    ) {
+    public Builder bindSchemaExtension(Class<? extends SchemaExtension> schemaExtension) {
       schemaExtensionClasses.add(schemaExtension);
       return this;
     }
 
     @Override
-    public <T extends PropertyExtension> Builder bindPropertyExtension(T propertyExtension) {
+    public <T extends PropertyExtension> Builder bindPropertyExtension(
+      T propertyExtension
+    ) {
       propertyExtensions.add(propertyExtension);
       return this;
     }
