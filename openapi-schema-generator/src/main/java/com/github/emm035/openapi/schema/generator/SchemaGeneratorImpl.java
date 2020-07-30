@@ -9,15 +9,15 @@ import com.github.emm035.openapi.core.v3.jackson.Json;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.exceptions.SchemaGenerationException;
-import com.github.emm035.openapi.schema.generator.internal.Internal;
+import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
+import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
 import com.github.emm035.openapi.schema.generator.internal.RefFactory;
-import com.github.emm035.openapi.schema.generator.internal.Schemas;
+import com.github.emm035.openapi.schema.generator.internal.SchemasCache;
 import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
+import com.github.emm035.openapi.schema.generator.internal.annotations.Internal;
 import com.github.emm035.openapi.schema.generator.internal.visitors.SchemaGeneratorVisitorWrapper;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Module;
@@ -25,34 +25,30 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 class SchemaGeneratorImpl implements SchemaGenerator {
   private final ObjectMapper objectMapper;
   private final TypeFactory typeFactory;
-  private final Map<String, Schema> schemaMap;
   private final RefFactory refFactory;
-  private final Schemas schemas;
+  private final SchemasCache schemasCache;
   private final SchemaGeneratorVisitorWrapper schemaGeneratorVisitorWrapper;
 
   @Inject
   private SchemaGeneratorImpl(
     @Internal ObjectMapper objectMapper,
     @Internal TypeFactory typeFactory,
-    @Internal Map<String, Schema> schemaMap,
     RefFactory refFactory,
-    Schemas schemas,
+    SchemasCache schemasCache,
     SchemaGeneratorVisitorWrapper schemaGeneratorVisitorWrapper
   ) {
     this.objectMapper = objectMapper;
     this.typeFactory = typeFactory;
-    this.schemaMap = schemaMap;
     this.refFactory = refFactory;
-    this.schemas = schemas;
+    this.schemasCache = schemasCache;
     this.schemaGeneratorVisitorWrapper = schemaGeneratorVisitorWrapper;
   }
 
-  public <T> Referenceable<Schema> generateSchema(TypeReference<T> typeReference)
+  public Referenceable<Schema> generateSchema(TypeReference<?> typeReference)
     throws SchemaGenerationException {
     return generateSchema(typeFactory.constructType(typeReference));
   }
@@ -65,7 +61,7 @@ class SchemaGeneratorImpl implements SchemaGenerator {
   public Referenceable<Schema> generateSchema(JavaType javaType)
     throws SchemaGenerationException {
     String typeName = TypeUtils.toTypeName(javaType);
-    if (schemaMap.containsKey(typeName)) {
+    if (schemasCache.contains(typeName)) {
       return refFactory.create(typeName);
     }
 
@@ -80,31 +76,35 @@ class SchemaGeneratorImpl implements SchemaGenerator {
   public SchemaResult resolveWithDependencies(Referenceable<Schema> refOrSchema)
     throws SchemaGenerationException {
     return SchemaResult.of(
-      schemas.resolve(refOrSchema),
-      schemas.getReferenced(refOrSchema)
+      schemasCache.resolve(refOrSchema),
+      schemasCache.getReferenced(refOrSchema)
     );
   }
 
   public Schema resolve(Referenceable<Schema> refOrSchema)
     throws SchemaGenerationException {
-    return schemas.resolve(refOrSchema);
+    return schemasCache.resolve(refOrSchema);
   }
 
   public void clearCachedSchemas() {
-    schemaMap.clear();
+    schemasCache.clearCachedSchemas();
   }
 
   public Map<String, Schema> getCachedSchemas() {
-    return schemaMap;
+    return schemasCache.getAll();
   }
 
   /**
    * Builder implementation
    */
   static class BuilderImpl implements Builder {
-    private final Set<Module> modules = Sets.newLinkedHashSet();
+    private final ImmutableSet.Builder<Module> modules = ImmutableSet.builder();
+    private final ImmutableSet.Builder<SchemaExtension> schemaExtensions = ImmutableSet.builder();
+    private final ImmutableSet.Builder<Class<? extends SchemaExtension>> schemaExtensionClasses = ImmutableSet.builder();
+    private final ImmutableSet.Builder<PropertyExtension> propertyExtensions = ImmutableSet.builder();
+    private final ImmutableSet.Builder<Class<? extends PropertyExtension>> propertyExtensionClasses = ImmutableSet.builder();
     private Optional<ObjectMapper> objectMapper = Optional.empty();
-    private ImmutableMap.Builder<String, Schema> defaultSchemas = ImmutableMap.builder();
+    private ImmutableMap.Builder<TypeReference<?>, Schema> defaultSchemas = ImmutableMap.builder();
 
     BuilderImpl() {}
 
@@ -113,13 +113,13 @@ class SchemaGeneratorImpl implements SchemaGenerator {
       return this;
     }
 
-    public Builder overrideSchemas(Map<String, Schema> defaultSchemas) {
+    public Builder overrideSchemas(Map<TypeReference<?>, Schema> defaultSchemas) {
       this.defaultSchemas.putAll(defaultSchemas);
       return this;
     }
 
-    public Builder overrideSchema(String typeName, Schema schema) {
-      this.defaultSchemas.put(typeName, schema);
+    public Builder overrideSchema(TypeReference<?> type, Schema schema) {
+      this.defaultSchemas.put(type, schema);
       return this;
     }
 
@@ -128,15 +128,46 @@ class SchemaGeneratorImpl implements SchemaGenerator {
       return this;
     }
 
+    @Override
+    public <T extends SchemaExtension> Builder bindSchemaExtension(T schemaExtension) {
+      schemaExtensions.add(schemaExtension);
+      return this;
+    }
+
+    @Override
+    public Builder bindSchemaExtension(
+      Class<? extends SchemaExtension> schemaExtension
+    ) {
+      schemaExtensionClasses.add(schemaExtension);
+      return this;
+    }
+
+    @Override
+    public <T extends PropertyExtension> Builder bindPropertyExtension(T propertyExtension) {
+      propertyExtensions.add(propertyExtension);
+      return this;
+    }
+
+    @Override
+    public Builder bindPropertyExtension(
+      Class<? extends PropertyExtension> propertyExtension
+    ) {
+      propertyExtensionClasses.add(propertyExtension);
+      return this;
+    }
+
     private SchemaGeneratorModule buildModule() {
       ObjectMapper objectMapperOrDefault = objectMapper.orElse(
         Json.MapperFactory.getInstance()
       );
-      ImmutableSet<Module> frozenModules = ImmutableSet.copyOf(this.modules);
       return new SchemaGeneratorModule(
         objectMapperOrDefault,
-        frozenModules,
-        defaultSchemas.build()
+        modules.build(),
+        defaultSchemas.build(),
+        schemaExtensions.build(),
+        schemaExtensionClasses.build(),
+        propertyExtensions.build(),
+        propertyExtensionClasses.build()
       );
     }
 

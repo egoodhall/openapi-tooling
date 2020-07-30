@@ -6,7 +6,16 @@ import com.github.emm035.openapi.core.v3.schemas.Schema;
 @FunctionalInterface
 public interface PropertyExtension extends Extension<BeanProperty> {
   Schema modify(Schema schema, BeanProperty beanProperty);
-  static PropertyExtension unmodified() {
-    return (schema, beanProperty) -> schema;
+
+  default PropertyExtension andThen(PropertyExtension next) {
+    return (schema, data) -> next.modify(modify(schema, data), data);
+  }
+
+  static <T> PropertyExtension all(Iterable<? extends PropertyExtension> extensions) {
+    PropertyExtension composed = (schema, data) -> schema;
+    for (PropertyExtension extension : extensions) {
+      composed = composed.andThen(extension);
+    }
+    return composed;
   }
 }

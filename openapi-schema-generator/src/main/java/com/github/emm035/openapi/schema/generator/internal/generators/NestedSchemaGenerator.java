@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
-import com.github.emm035.openapi.schema.generator.internal.Internal;
+import com.github.emm035.openapi.schema.generator.internal.annotations.Internal;
 import com.github.emm035.openapi.schema.generator.internal.visitors.SchemaGeneratorVisitorWrapper;
 import com.google.inject.Inject;
 

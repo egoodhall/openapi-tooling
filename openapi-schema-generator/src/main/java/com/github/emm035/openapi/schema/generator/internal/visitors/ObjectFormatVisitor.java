@@ -8,21 +8,24 @@ import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.ObjectSchema;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.annotations.Extension;
+import com.github.emm035.openapi.schema.generator.annotations.SchemaProperty;
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
 import com.github.emm035.openapi.schema.generator.internal.Generator;
 import com.github.emm035.openapi.schema.generator.internal.RefFactory;
-import com.github.emm035.openapi.schema.generator.internal.Schemas;
+import com.github.emm035.openapi.schema.generator.internal.SchemasCache;
 import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
 import com.github.emm035.openapi.schema.generator.internal.generators.NestedSchemaGenerator;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import java.util.Optional;
+
 public class ObjectFormatVisitor
   extends JsonObjectFormatVisitor.Base
   implements Generator {
   private final JavaType javaType;
-  private final Schemas schemas;
+  private final SchemasCache schemasCache;
   private final SchemaExtension schemaExtension;
   private final PropertyExtension propertyExtension;
   private final RefFactory refFactory;
@@ -34,12 +37,12 @@ public class ObjectFormatVisitor
     @Assisted JavaType javaType,
     @Extension SchemaExtension schemaExtension,
     @Extension PropertyExtension propertyExtension,
-    Schemas schemas,
+    SchemasCache schemasCache,
     RefFactory refFactory,
     NestedSchemaGenerator nestedSchemaGenerator
   ) {
     this.javaType = javaType;
-    this.schemas = schemas;
+    this.schemasCache = schemasCache;
     this.schemaExtension = schemaExtension;
     this.propertyExtension = propertyExtension;
     this.refFactory = refFactory;
@@ -58,23 +61,27 @@ public class ObjectFormatVisitor
     String typeName = TypeUtils.toTypeName(TypeUtils.unwrap(prop.getType()));
 
     Referenceable<Schema> schema;
-    if (schemas.exists(typeName)) {
+    if (schemasCache.contains(typeName)) {
       schema = refFactory.create(typeName);
     } else {
       schema =
         nestedSchemaGenerator.generateSchema(TypeUtils.unwrap(prop.getType()), false);
     }
-    Schema modifiedSchema = propertyExtension.modify(schemas.resolve(schema), prop);
+    Schema modifiedSchema = propertyExtension.modify(schemasCache.resolve(schema), prop);
 
     // Overwrite schema if needed
     if (schema.isReferential()) {
       this.schemaBuilder.putProperties(
-          prop.getName(),
-          schemas.putSchema(prop.getName(), modifiedSchema)
+          getPropertyName(prop),
+          schemasCache.putSchema(prop.getName(), modifiedSchema)
         );
     } else {
-      this.schemaBuilder.putProperties(prop.getName(), modifiedSchema);
+      this.schemaBuilder.putProperties(getPropertyName(prop), modifiedSchema);
     }
+  }
+
+  private String getPropertyName(BeanProperty prop) {
+    return Optional.ofNullable(prop.getAnnotation(SchemaProperty.class)).map(SchemaProperty::value).orElseGet(prop::getName);
   }
 
   //===============//
@@ -85,7 +92,7 @@ public class ObjectFormatVisitor
   public Referenceable<Schema> emit(boolean asReference) throws JsonMappingException {
     Schema schema = schemaExtension.modify(schemaBuilder.build(), javaType);
     if (asReference) {
-      return schemas.putSchema(TypeUtils.toTypeName(javaType), schema);
+      return schemasCache.putSchema(TypeUtils.toTypeName(javaType), schema);
     }
     return schema;
   }

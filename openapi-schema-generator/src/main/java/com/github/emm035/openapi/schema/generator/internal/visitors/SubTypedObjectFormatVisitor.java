@@ -11,11 +11,12 @@ import com.github.emm035.openapi.core.v3.schemas.ObjectSchema;
 import com.github.emm035.openapi.core.v3.schemas.OneOfSchema;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.annotations.Extension;
+import com.github.emm035.openapi.schema.generator.annotations.SchemaProperty;
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
 import com.github.emm035.openapi.schema.generator.internal.Generator;
 import com.github.emm035.openapi.schema.generator.internal.RefFactory;
-import com.github.emm035.openapi.schema.generator.internal.Schemas;
+import com.github.emm035.openapi.schema.generator.internal.SchemasCache;
 import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
 import com.github.emm035.openapi.schema.generator.internal.generators.NestedSchemaGenerator;
 import com.github.emm035.openapi.schema.generator.internal.generators.SubTypeGenerator;
@@ -29,7 +30,7 @@ public class SubTypedObjectFormatVisitor
   extends JsonObjectFormatVisitor.Base
   implements Generator {
   private final JavaType javaType;
-  private final Schemas schemas;
+  private final SchemasCache schemasCache;
   private final SchemaExtension schemaExtension;
   private final NestedSchemaGenerator nestedSchemaGenerator;
   private final SubTypeGenerator.Factory subTypeGeneratorFactory;
@@ -40,7 +41,7 @@ public class SubTypedObjectFormatVisitor
   @Inject
   public SubTypedObjectFormatVisitor(
     @Assisted JavaType javaType,
-    Schemas schemas,
+    SchemasCache schemasCache,
     @Extension SchemaExtension schemaExtension,
     @Extension PropertyExtension propertyExtension,
     NestedSchemaGenerator nestedSchemaGenerator,
@@ -51,7 +52,7 @@ public class SubTypedObjectFormatVisitor
     this.refFactory = refFactory;
     this.baseSchemaBuilder = ObjectSchema.builder();
     this.javaType = javaType;
-    this.schemas = schemas;
+    this.schemasCache = schemasCache;
     this.schemaExtension = schemaExtension;
     this.nestedSchemaGenerator = nestedSchemaGenerator;
     this.subTypeGeneratorFactory = subTypeGeneratorFactory;
@@ -62,19 +63,19 @@ public class SubTypedObjectFormatVisitor
     String typeName = TypeUtils.toTypeName(TypeUtils.unwrap(prop.getType()));
 
     Referenceable<Schema> schema;
-    if (schemas.exists(typeName)) {
+    if (schemasCache.contains(typeName)) {
       schema = refFactory.create(typeName);
     } else {
       schema =
         nestedSchemaGenerator.generateSchema(TypeUtils.unwrap(prop.getType()), false);
     }
-    Schema modifiedSchema = propertyExtension.modify(schemas.resolve(schema), prop);
+    Schema modifiedSchema = propertyExtension.modify(schemasCache.resolve(schema), prop);
 
     // Overwrite schema if needed
     if (schema.isReferential()) {
       this.baseSchemaBuilder.putProperties(
-          prop.getName(),
-          schemas.putSchema(prop.getName(), modifiedSchema)
+          getPropertyName(prop),
+          schemasCache.putSchema(prop.getName(), modifiedSchema)
         );
     } else {
       this.baseSchemaBuilder.putProperties(prop.getName(), modifiedSchema);
@@ -85,6 +86,10 @@ public class SubTypedObjectFormatVisitor
   public void property(BeanProperty prop) throws JsonMappingException {
     baseSchemaBuilder.addRequired(prop.getName());
     optionalProperty(prop);
+  }
+
+  private String getPropertyName(BeanProperty prop) {
+    return Optional.ofNullable(prop.getAnnotation(SchemaProperty.class)).map(SchemaProperty::value).orElseGet(prop::getName);
   }
 
   //===============//
@@ -98,7 +103,7 @@ public class SubTypedObjectFormatVisitor
       .setDiscriminator(buildDiscriminator());
 
     Schema baseSchema = schemaExtension.modify(baseSchemaBuilder.build(), javaType);
-    Referenceable<Schema> baseSchemaRef = schemas.putSchema(
+    Referenceable<Schema> baseSchemaRef = schemasCache.putSchema(
       TypeUtils.toTypeName(javaType),
       baseSchema
     );

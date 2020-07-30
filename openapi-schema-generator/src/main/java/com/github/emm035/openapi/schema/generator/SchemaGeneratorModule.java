@@ -9,8 +9,10 @@ import com.github.emm035.openapi.schema.generator.annotations.Extension;
 import com.github.emm035.openapi.schema.generator.annotations.RefPrefix;
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
-import com.github.emm035.openapi.schema.generator.internal.Internal;
 import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
+import com.github.emm035.openapi.schema.generator.internal.annotations.CachedSchemas;
+import com.github.emm035.openapi.schema.generator.internal.annotations.DefaultSchemas;
+import com.github.emm035.openapi.schema.generator.internal.annotations.Internal;
 import com.github.emm035.openapi.schema.generator.internal.generators.SubTypeGenerator;
 import com.github.emm035.openapi.schema.generator.internal.visitors.ArrayFormatVisitor;
 import com.github.emm035.openapi.schema.generator.internal.visitors.BooleanFormatVisitor;
@@ -19,6 +21,8 @@ import com.github.emm035.openapi.schema.generator.internal.visitors.NumberFormat
 import com.github.emm035.openapi.schema.generator.internal.visitors.ObjectFormatVisitor;
 import com.github.emm035.openapi.schema.generator.internal.visitors.StringFormatVisitor;
 import com.github.emm035.openapi.schema.generator.internal.visitors.SubTypedObjectFormatVisitor;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.MutableGraph;
@@ -31,24 +35,42 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.MapBinder;
+import com.google.inject.multibindings.Multibinder;
 import com.google.inject.multibindings.OptionalBinder;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 class SchemaGeneratorModule extends AbstractModule {
-  private final Map<String, Schema> schemas = Maps.newConcurrentMap();
+  private final Map<TypeReference<?>, Schema> defaultSchemas;
+  private final Set<SchemaExtension> schemaExtensions;
+  private final Set<Class<? extends SchemaExtension>> schemaExtensionClasses;
+  private final Set<PropertyExtension> propertyExtensions;
+  private final Set<Class<? extends PropertyExtension>> propertyExtensionClasses;
   private final ObjectMapper objectMapper;
   private final Collection<Module> modules;
 
   SchemaGeneratorModule(
     ObjectMapper objectMapper,
     Collection<Module> modules,
-    Map<String, Schema> defaultSchemas
+    Map<TypeReference<?>, Schema> defaultSchemas,
+    Set<SchemaExtension> schemaExtensions,
+    Set<Class<? extends SchemaExtension>> schemaExtensionClasses,
+    Set<PropertyExtension> propertyExtensions,
+    Set<Class<? extends PropertyExtension>> propertyExtensionClasses
   ) {
     this.objectMapper = objectMapper;
     this.modules = modules;
-    this.schemas.putAll(defaultSchemas);
+    this.defaultSchemas = defaultSchemas;
+    this.schemaExtensions = schemaExtensions;
+    this.schemaExtensionClasses = schemaExtensionClasses;
+    this.propertyExtensions = propertyExtensions;
+    this.propertyExtensionClasses = propertyExtensionClasses;
   }
 
   @Override
@@ -65,23 +87,27 @@ class SchemaGeneratorModule extends AbstractModule {
     bindAssistedFactory(SubTypedObjectFormatVisitor.Factory.class);
     bindAssistedFactory(SubTypeGenerator.Factory.class);
 
-    // Make sure we have a map binder available
-    MapBinder.newMapBinder(
+    Multibinder<SchemaExtension> schemaExtensionMultibinder = Multibinder.newSetBinder(
       binder(),
-      new TypeLiteral<TypeReference<?>>() {},
-      new TypeLiteral<Schema>() {},
-      Extension.class
+      Key.get(SchemaExtension.class, Internal.class)
     );
+    for (SchemaExtension extension : schemaExtensions) {
+      schemaExtensionMultibinder.addBinding().toInstance(extension);
+    }
+    for (Class<? extends SchemaExtension> extension : schemaExtensionClasses) {
+      schemaExtensionMultibinder.addBinding().to(extension);
+    }
 
-    OptionalBinder
-      .newOptionalBinder(binder(), Key.get(SchemaExtension.class, Extension.class))
-      .setDefault()
-      .toInstance(SchemaExtension.unmodified());
-
-    OptionalBinder
-      .newOptionalBinder(binder(), Key.get(PropertyExtension.class, Extension.class))
-      .setDefault()
-      .toInstance(PropertyExtension.unmodified());
+    Multibinder<PropertyExtension> propertyExtensionMultibinder = Multibinder.newSetBinder(
+      binder(),
+      Key.get(PropertyExtension.class, Internal.class)
+    );
+    for (PropertyExtension extension : propertyExtensions) {
+      propertyExtensionMultibinder.addBinding().toInstance(extension);
+    }
+    for (Class<? extends PropertyExtension> extension : propertyExtensionClasses) {
+      propertyExtensionMultibinder.addBinding().to(extension);
+    }
 
     OptionalBinder
       .newOptionalBinder(binder(), Key.get(String.class, RefPrefix.class))
@@ -95,20 +121,51 @@ class SchemaGeneratorModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @Internal
-  public Map<String, Schema> providesSchemasMap(
-    @Extension Map<TypeReference<?>, Schema> providedSchemas
+  @CachedSchemas
+  public Map<String, Schema> providesCachedSchemasMap(
+    @DefaultSchemas Map<String, Schema> providedSchemas
   ) {
-    LinkedHashMap<String, Schema> baseSchemas = new LinkedHashMap<>(schemas);
+    return providedSchemas
+      .entrySet()
+      .stream()
+      .collect(Collectors.toConcurrentMap(Entry::getKey, Entry::getValue));
+  }
 
-    for (Map.Entry<TypeReference<?>, Schema> schemaMapping : providedSchemas.entrySet()) {
-      JavaType javaType = objectMapper
-        .getTypeFactory()
-        .constructType(schemaMapping.getKey());
-      baseSchemas.put(TypeUtils.toTypeName(javaType), schemaMapping.getValue());
-    }
+  @Provides
+  @Singleton
+  @DefaultSchemas
+  public Map<String, Schema> providesDefaultSchemasMap(
+    @Internal TypeFactory typeFactory
+  ) {
+    return defaultSchemas
+      .entrySet()
+      .stream()
+      .map(
+        entry ->
+          Maps.immutableEntry(
+            TypeUtils.toTypeName(typeFactory.constructType(entry.getKey())),
+            entry.getValue()
+          )
+      )
+      .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
+  }
 
-    return baseSchemas;
+  @Provides
+  @Singleton
+  @Extension
+  public SchemaExtension providesSchemaExtension(
+    @Internal Set<SchemaExtension> providedExtensions
+  ) {
+    return SchemaExtension.all(providedExtensions);
+  }
+
+  @Provides
+  @Singleton
+  @Extension
+  public PropertyExtension providesPropertyExtension(
+    @Internal Set<PropertyExtension> providedExtensions
+  ) {
+    return PropertyExtension.all(providedExtensions);
   }
 
   @Provides
@@ -130,14 +187,5 @@ class SchemaGeneratorModule extends AbstractModule {
   @Internal
   public TypeFactory providesTypeFactory() {
     return objectMapper.getTypeFactory();
-  }
-
-  public static MapBinder<TypeReference<?>, Schema> typeOverrideBinder(Binder binder) {
-    return MapBinder.newMapBinder(
-      binder,
-      new TypeLiteral<TypeReference<?>>() {},
-      new TypeLiteral<Schema>() {},
-      Extension.class
-    );
   }
 }

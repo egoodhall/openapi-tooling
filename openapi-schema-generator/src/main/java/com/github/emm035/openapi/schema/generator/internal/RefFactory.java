@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.emm035.openapi.core.v3.references.Ref;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.annotations.RefPrefix;
+import com.github.emm035.openapi.schema.generator.internal.annotations.Internal;
 import com.google.inject.Inject;
 import java.util.regex.Pattern;
 

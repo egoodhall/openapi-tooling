@@ -14,7 +14,7 @@ import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.internal.Generator;
 import com.github.emm035.openapi.schema.generator.internal.SchemaGeneratorInternalException;
-import com.github.emm035.openapi.schema.generator.internal.Schemas;
+import com.github.emm035.openapi.schema.generator.internal.SchemasCache;
 import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
 import com.github.emm035.openapi.schema.generator.internal.generators.SubTypeGenerator;
 import com.google.inject.Inject;
@@ -29,7 +29,7 @@ public class SchemaGeneratorVisitorWrapper
   private final ArrayFormatVisitor.Factory arrayFormatVisitorFactory;
   private final MapFormatVisitor.Factory mapFormatVisitorFactory;
   private final SubTypedObjectFormatVisitor.Factory compositeObjectFormatVisitorFactory;
-  private final Schemas schemas;
+  private final SchemasCache schemasCache;
 
   private Generator schemaGenerator = null;
 
@@ -43,7 +43,7 @@ public class SchemaGeneratorVisitorWrapper
     MapFormatVisitor.Factory mapFormatVisitorFactory,
     SubTypeGenerator.Factory subTypeGeneratorFactory,
     SubTypedObjectFormatVisitor.Factory compositeObjectFormatVisitorFactory,
-    Schemas schemas
+    SchemasCache schemasCache
   ) {
     this.stringFormatVisitorFactory = stringFormatVisitorFactory;
     this.numberFormatVisitorFactory = numberFormatVisitorFactory;
@@ -52,7 +52,7 @@ public class SchemaGeneratorVisitorWrapper
     this.arrayFormatVisitorFactory = arrayFormatVisitorFactory;
     this.mapFormatVisitorFactory = mapFormatVisitorFactory;
     this.compositeObjectFormatVisitorFactory = compositeObjectFormatVisitorFactory;
-    this.schemas = schemas;
+    this.schemasCache = schemasCache;
   }
 
   @Override

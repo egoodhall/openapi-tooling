@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonValueFormat;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.core.v3.schemas.StringSchema;
+import com.github.emm035.openapi.schema.generator.annotations.Extension;
+import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
 import com.github.emm035.openapi.schema.generator.internal.Generator;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
@@ -24,11 +26,14 @@ public class StringFormatVisitor
   private final StringSchema.Builder stringSchema;
 
   private final JavaType javaType;
+  private final SchemaExtension schemaExtension;
 
   @Inject
-  public StringFormatVisitor(@Assisted JavaType javaType) {
+  public StringFormatVisitor(@Assisted JavaType javaType,
+                             @Extension SchemaExtension schemaExtension) {
     this.javaType = javaType;
-    stringSchema = StringSchema.builder();
+    this.schemaExtension = schemaExtension;
+    this.stringSchema = StringSchema.builder();
   }
 
   @Override
@@ -47,7 +52,7 @@ public class StringFormatVisitor
 
   @Override
   public Referenceable<Schema> emit(boolean asReference) {
-    return stringSchema.build();
+    return schemaExtension.modify(stringSchema.build(), javaType);
   }
 
   //==================//
