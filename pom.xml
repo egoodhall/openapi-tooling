@@ -69,6 +69,7 @@
     <dep.junit.version>4.12</dep.junit.version>
     <dep.zjsonpatch.version>0.4.9</dep.zjsonpatch.version>
     <plugin.compiler.version>3.8.1</plugin.compiler.version>
+    <plugin.prettier-maven-plugin.version>0.7</plugin.prettier-maven-plugin.version>
     <plugin.prettier.goal>write</plugin.prettier.goal>
     <plugin.sortpom.goal>sort</plugin.sortpom.goal>
   </properties>
@@ -265,7 +266,7 @@
       <plugin>
         <groupId>com.hubspot.maven.plugins</groupId>
         <artifactId>prettier-maven-plugin</artifactId>
-        <version>0.7</version>
+        <version>${plugin.prettier-maven-plugin.version}</version>
         <executions>
           <execution>
             <id>prettier</id>
