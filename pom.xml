@@ -26,6 +26,10 @@
   </developers>
 
   <modules>
+    <module>openapi-annotation-processor</module>
+    <module>openapi-annotation-processor-api</module>
+    <module>openapi-annotation-processor-jaxrs</module>
+    <module>openapi-annotation-processor-testing</module>
     <module>openapi-core</module>
     <module>openapi-schema-generator</module>
   </modules>
@@ -49,16 +53,24 @@
 
   <properties>
     <dep.assertj.version>3.4.1</dep.assertj.version>
+    <dep.auto-common.version>0.10</dep.auto-common.version>
+    <dep.auto-service-annotations.version>1.0-rc6</dep.auto-service-annotations.version>
+    <dep.auto-service.version>1.0-rc4</dep.auto-service.version>
     <dep.guava.version>28.2-jre</dep.guava.version>
     <dep.guice.version>4.2.3</dep.guice.version>
     <dep.immutables.version>2.8.3</dep.immutables.version>
     <dep.jackson-databind.version>2.9.10.5</dep.jackson-databind.version>
     <dep.jackson.version>2.9.10</dep.jackson.version>
+    <dep.javapoet.version>1.11.1</dep.javapoet.version>
+    <dep.javax-ws-rs.version>2.0.1</dep.javax-ws-rs.version>
     <dep.jsr305.version>3.0.1</dep.jsr305.version>
     <dep.junit.version>4.12</dep.junit.version>
     <dep.zjsonpatch.version>0.4.9</dep.zjsonpatch.version>
+    <plugin.compiler.version>3.8.1</plugin.compiler.version>
     <plugin.prettier.goal>write</plugin.prettier.goal>
     <plugin.sortpom.goal>sort</plugin.sortpom.goal>
+    <dep.classgraph.version>4.8.87</dep.classgraph.version>
+    <dep.google-java-format.version>1.8</dep.google-java-format.version>
   </properties>
 
   <dependencyManagement>
@@ -99,6 +111,26 @@
         <version>${dep.zjsonpatch.version}</version>
       </dependency>
       <dependency>
+        <groupId>io.github.classgraph</groupId>
+        <artifactId>classgraph</artifactId>
+        <version>${dep.classgraph.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.emm035</groupId>
+        <artifactId>openapi-annotation-processor</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.emm035</groupId>
+        <artifactId>openapi-annotation-processor-api</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.emm035</groupId>
+        <artifactId>openapi-annotation-processor-jaxrs</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>com.github.emm035</groupId>
         <artifactId>openapi-core</artifactId>
         <version>1.0-SNAPSHOT</version>
@@ -107,6 +139,26 @@
         <groupId>com.github.emm035</groupId>
         <artifactId>openapi-schema-generator</artifactId>
         <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.auto</groupId>
+        <artifactId>auto-common</artifactId>
+        <version>${dep.auto-common.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.googlejavaformat</groupId>
+        <artifactId>google-java-format</artifactId>
+        <version>${dep.google-java-format.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.auto.service</groupId>
+        <artifactId>auto-service</artifactId>
+        <version>${dep.auto-service.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.auto.service</groupId>
+        <artifactId>auto-service-annotations</artifactId>
+        <version>${dep.auto-service-annotations.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.code.findbugs</groupId>
@@ -127,6 +179,16 @@
         <groupId>com.google.inject.extensions</groupId>
         <artifactId>guice-assistedinject</artifactId>
         <version>${dep.guice.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.squareup</groupId>
+        <artifactId>javapoet</artifactId>
+        <version>${dep.javapoet.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.ws.rs</groupId>
+        <artifactId>javax.ws.rs-api</artifactId>
+        <version>${dep.javax-ws-rs.version}</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
@@ -154,11 +216,13 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.1</version>
+          <version>${plugin.compiler.version}</version>
           <configuration>
             <encoding>UTF-8</encoding>
             <source>11</source>
             <target>11</target>
+            <showWarnings>true</showWarnings>
+            <showDeprecation>true</showDeprecation>
           </configuration>
         </plugin>
 
@@ -276,6 +340,20 @@
                 <goals>
                   <goal>jar-no-fork</goal>
                 </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.0.2</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>analyze</goal>
+                </goals>
+                <phase>verify</phase>
               </execution>
             </executions>
           </plugin>
