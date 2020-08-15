@@ -270,7 +270,7 @@
         <executions>
           <execution>
             <id>prettier</id>
-            <phase>validate</phase>
+            <phase>process-sources</phase>
             <goals>
               <goal>${plugin.prettier.goal}</goal>
             </goals>
