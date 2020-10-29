@@ -36,7 +36,7 @@ public class OpenApiTest {
     try {
       String jsonString = loadResourceFileAsString(filename);
       JsonNode readFromFile = om.readTree(jsonString);
-      OpenApi parsed = om.treeToValue(readFromFile, OpenApi.class);
+      OpenApi parsed = om.readValue(jsonString, OpenApi.class);
       JsonNode serialized = om.valueToTree(parsed);
 
       onlyRemovedEmptyNodes(readFromFile, serialized);
