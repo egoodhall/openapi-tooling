@@ -3,7 +3,9 @@ package com.github.emm035.openapi.annotation.processor.jaxrs;
 import com.github.emm035.openapi.annotation.processor.api.MethodMatcher;
 import com.github.emm035.openapi.annotation.processor.api.parsers.MethodParser;
 import com.google.auto.common.MoreTypes;
-
+import java.lang.annotation.Annotation;
+import java.util.Objects;
+import java.util.Set;
 import javax.lang.model.element.ExecutableElement;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -12,9 +14,6 @@ import javax.ws.rs.HttpMethod;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
-import java.lang.annotation.Annotation;
-import java.util.Objects;
-import java.util.Set;
 
 public class JaxRsMethodHandler implements MethodMatcher, MethodParser {
 

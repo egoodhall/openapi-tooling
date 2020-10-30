@@ -16,7 +16,13 @@ public class JaxRsModule extends ProcessorModule {
   @Override
   protected void configure() {
     bindMethodMatchers(binder(), JaxRsMethodHandler.class);
-    bindParamParsers(binder(), JaxRsQueryParamParser.class, JaxRsPathParamParser.class, JaxRsCookieParamParser.class, JaxRsHeaderParamParser.class);
+    bindParamParsers(
+      binder(),
+      JaxRsQueryParamParser.class,
+      JaxRsPathParamParser.class,
+      JaxRsCookieParamParser.class,
+      JaxRsHeaderParamParser.class
+    );
     bindProducesContentTypeParsers(binder(), JaxRsProducesContentTypeParser.class);
     bindConsumesContentTypeParsers(binder(), JaxRsConsumesContentTypeParser.class);
     bindResponseParsers(binder(), JaxRsSimpleResponseParser.class);

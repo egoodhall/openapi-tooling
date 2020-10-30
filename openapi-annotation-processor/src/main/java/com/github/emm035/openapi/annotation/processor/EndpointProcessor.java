@@ -10,15 +10,14 @@ import com.github.emm035.openapi.annotation.processor.api.parsers.ProducesConten
 import com.github.emm035.openapi.annotation.processor.api.parsers.ResponseParser;
 import com.google.auto.common.MoreElements;
 import com.google.inject.Inject;
-
+import java.lang.annotation.Annotation;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.tools.Diagnostic;
-import java.lang.annotation.Annotation;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class EndpointProcessor {
   private final Messager messager;
