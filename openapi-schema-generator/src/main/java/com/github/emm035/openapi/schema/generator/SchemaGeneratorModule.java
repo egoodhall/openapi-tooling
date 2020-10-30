@@ -32,7 +32,6 @@ import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.multibindings.OptionalBinder;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -57,7 +56,8 @@ class SchemaGeneratorModule extends AbstractModule {
     Set<Class<? extends SchemaExtension>> schemaExtensionClasses,
     Set<PropertyExtension> propertyExtensions,
     Set<Class<? extends PropertyExtension>> propertyExtensionClasses,
-    boolean requireNonOptionalScalarProperties) {
+    boolean requireNonOptionalScalarProperties
+  ) {
     this.objectMapper = objectMapper;
     this.modules = modules;
     this.defaultSchemas = defaultSchemas;

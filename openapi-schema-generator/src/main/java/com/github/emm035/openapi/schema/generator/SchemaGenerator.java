@@ -9,7 +9,6 @@ import com.github.emm035.openapi.schema.generator.exceptions.SchemaGenerationExc
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
 import com.google.inject.Module;
-
 import java.lang.reflect.Type;
 import java.util.Map;
 

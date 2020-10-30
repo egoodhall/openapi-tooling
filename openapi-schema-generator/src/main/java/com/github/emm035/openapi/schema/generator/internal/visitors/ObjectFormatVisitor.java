@@ -61,7 +61,10 @@ public class ObjectFormatVisitor
   @Override
   public void optionalProperty(BeanProperty prop) throws JsonMappingException {
     String typeName = TypeUtils.toTypeName(TypeUtils.unwrap(prop.getType()));
-    if (prop.isRequired() || (requireNonOptionalScalarProperties && !TypeUtils.isOptional(prop.getType()))) {
+    if (
+      prop.isRequired() ||
+      (requireNonOptionalScalarProperties && !TypeUtils.isOptional(prop.getType()))
+    ) {
       this.schemaBuilder.addRequired(prop.getName());
     }
 

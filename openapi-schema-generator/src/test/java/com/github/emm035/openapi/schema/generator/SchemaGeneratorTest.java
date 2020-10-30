@@ -1,5 +1,7 @@
 package com.github.emm035.openapi.schema.generator;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.github.emm035.openapi.core.v3.references.Ref;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.AbstractIntegerSchema;
@@ -15,8 +17,6 @@ import com.github.emm035.openapi.schema.generator.models.Impl1;
 import com.github.emm035.openapi.schema.generator.models.ModelWithOptionals;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class SchemaGeneratorTest {
   private static final SchemaGenerator SCHEMA_GENERATOR = SchemaGenerator.newInstance();
@@ -90,8 +90,11 @@ public class SchemaGeneratorTest {
   }
 
   @Test
-  public void getSchema_requireNonOptionalScalarProperties_generatesRequiredProperties() throws SchemaGenerationException {
-    Referenceable<Schema> schema = SCHEMA_GENERATOR.resolve(SCHEMA_GENERATOR.generateSchema(ModelWithOptionals.class));
+  public void getSchema_requireNonOptionalScalarProperties_generatesRequiredProperties()
+    throws SchemaGenerationException {
+    Referenceable<Schema> schema = SCHEMA_GENERATOR.resolve(
+      SCHEMA_GENERATOR.generateSchema(ModelWithOptionals.class)
+    );
     assertThat(schema).isInstanceOf(ObjectSchema.class);
     assertThat(((ObjectSchema) schema).getRequired()).containsExactly("instant");
   }
