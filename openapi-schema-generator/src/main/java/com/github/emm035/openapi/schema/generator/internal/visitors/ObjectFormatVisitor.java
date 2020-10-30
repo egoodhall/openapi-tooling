@@ -8,6 +8,7 @@ import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.ObjectSchema;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.annotations.Extension;
+import com.github.emm035.openapi.schema.generator.annotations.RequireNonOptionalScalarProperties;
 import com.github.emm035.openapi.schema.generator.annotations.SchemaProperty;
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
@@ -24,6 +25,7 @@ public class ObjectFormatVisitor
   extends JsonObjectFormatVisitor.Base
   implements Generator {
   private final JavaType javaType;
+  private final boolean requireNonOptionalScalarProperties;
   private final SchemasCache schemasCache;
   private final SchemaExtension schemaExtension;
   private final PropertyExtension propertyExtension;
@@ -36,11 +38,13 @@ public class ObjectFormatVisitor
     @Assisted JavaType javaType,
     @Extension SchemaExtension schemaExtension,
     @Extension PropertyExtension propertyExtension,
+    @RequireNonOptionalScalarProperties boolean requireNonOptionalScalarProperties,
     SchemasCache schemasCache,
     RefFactory refFactory,
     NestedSchemaGenerator nestedSchemaGenerator
   ) {
     this.javaType = javaType;
+    this.requireNonOptionalScalarProperties = requireNonOptionalScalarProperties;
     this.schemasCache = schemasCache;
     this.schemaExtension = schemaExtension;
     this.propertyExtension = propertyExtension;
@@ -51,13 +55,15 @@ public class ObjectFormatVisitor
 
   @Override
   public void property(BeanProperty prop) throws JsonMappingException {
-    this.schemaBuilder.addRequired(prop.getName());
     optionalProperty(prop);
   }
 
   @Override
   public void optionalProperty(BeanProperty prop) throws JsonMappingException {
     String typeName = TypeUtils.toTypeName(TypeUtils.unwrap(prop.getType()));
+    if (prop.isRequired() || (requireNonOptionalScalarProperties && !TypeUtils.isOptional(prop.getType()))) {
+      this.schemaBuilder.addRequired(prop.getName());
+    }
 
     Referenceable<Schema> schema;
     if (schemasCache.contains(typeName)) {

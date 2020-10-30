@@ -69,4 +69,11 @@ public class TypeUtils {
     }
     return javaType;
   }
+
+  public static boolean isOptional(JavaType javaType) {
+    if (javaType.getRawClass().equals(Optional.class)) {
+      return true;
+    }
+    return false;
+  }
 }

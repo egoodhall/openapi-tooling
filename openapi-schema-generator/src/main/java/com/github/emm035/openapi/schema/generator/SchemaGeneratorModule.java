@@ -1,12 +1,12 @@
 package com.github.emm035.openapi.schema.generator;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.annotations.Extension;
 import com.github.emm035.openapi.schema.generator.annotations.RefPrefix;
+import com.github.emm035.openapi.schema.generator.annotations.RequireNonOptionalScalarProperties;
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
 import com.github.emm035.openapi.schema.generator.internal.TypeUtils;
@@ -21,29 +21,22 @@ import com.github.emm035.openapi.schema.generator.internal.visitors.NumberFormat
 import com.github.emm035.openapi.schema.generator.internal.visitors.ObjectFormatVisitor;
 import com.github.emm035.openapi.schema.generator.internal.visitors.StringFormatVisitor;
 import com.github.emm035.openapi.schema.generator.internal.visitors.SubTypedObjectFormatVisitor;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.MutableGraph;
 import com.google.inject.AbstractModule;
-import com.google.inject.Binder;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.multibindings.OptionalBinder;
+
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 class SchemaGeneratorModule extends AbstractModule {
@@ -52,6 +45,7 @@ class SchemaGeneratorModule extends AbstractModule {
   private final Set<Class<? extends SchemaExtension>> schemaExtensionClasses;
   private final Set<PropertyExtension> propertyExtensions;
   private final Set<Class<? extends PropertyExtension>> propertyExtensionClasses;
+  private final boolean requireNonOptionalScalarProperties;
   private final ObjectMapper objectMapper;
   private final Collection<Module> modules;
 
@@ -62,8 +56,8 @@ class SchemaGeneratorModule extends AbstractModule {
     Set<SchemaExtension> schemaExtensions,
     Set<Class<? extends SchemaExtension>> schemaExtensionClasses,
     Set<PropertyExtension> propertyExtensions,
-    Set<Class<? extends PropertyExtension>> propertyExtensionClasses
-  ) {
+    Set<Class<? extends PropertyExtension>> propertyExtensionClasses,
+    boolean requireNonOptionalScalarProperties) {
     this.objectMapper = objectMapper;
     this.modules = modules;
     this.defaultSchemas = defaultSchemas;
@@ -71,6 +65,7 @@ class SchemaGeneratorModule extends AbstractModule {
     this.schemaExtensionClasses = schemaExtensionClasses;
     this.propertyExtensions = propertyExtensions;
     this.propertyExtensionClasses = propertyExtensionClasses;
+    this.requireNonOptionalScalarProperties = requireNonOptionalScalarProperties;
   }
 
   @Override
@@ -117,6 +112,13 @@ class SchemaGeneratorModule extends AbstractModule {
 
   private void bindAssistedFactory(Class<?> clazz) {
     install(new FactoryModuleBuilder().build(clazz));
+  }
+
+  @Provides
+  @Singleton
+  @RequireNonOptionalScalarProperties
+  public boolean providesNonOptionalScalarPropertiesFlag() {
+    return requireNonOptionalScalarProperties;
   }
 
   @Provides

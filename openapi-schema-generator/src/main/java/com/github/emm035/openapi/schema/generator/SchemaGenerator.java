@@ -3,14 +3,13 @@ package com.github.emm035.openapi.schema.generator;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.emm035.openapi.core.v3.jackson.Json;
 import com.github.emm035.openapi.core.v3.references.Referenceable;
 import com.github.emm035.openapi.core.v3.schemas.Schema;
-import com.github.emm035.openapi.schema.generator.annotations.Extension;
 import com.github.emm035.openapi.schema.generator.exceptions.SchemaGenerationException;
 import com.github.emm035.openapi.schema.generator.extension.PropertyExtension;
 import com.github.emm035.openapi.schema.generator.extension.SchemaExtension;
 import com.google.inject.Module;
+
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -45,6 +44,7 @@ public interface SchemaGenerator {
     Builder overrideSchema(TypeReference<?> type, Schema schema);
     Builder addModules(Module... modules);
     Builder bindSchemaExtension(Class<? extends SchemaExtension> schemaExtension);
+    Builder requireNonOptionalScalarProperties(boolean require);
     <T extends SchemaExtension> Builder bindSchemaExtension(T schemaExtension);
     Builder bindPropertyExtension(Class<? extends PropertyExtension> propertyExtension);
     <T extends PropertyExtension> Builder bindPropertyExtension(T propertyExtension);

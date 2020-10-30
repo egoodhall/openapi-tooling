@@ -105,6 +105,7 @@ class SchemaGeneratorImpl implements SchemaGenerator {
     private final ImmutableSet.Builder<Class<? extends PropertyExtension>> propertyExtensionClasses = ImmutableSet.builder();
     private Optional<ObjectMapper> objectMapper = Optional.empty();
     private ImmutableMap.Builder<TypeReference<?>, Schema> defaultSchemas = ImmutableMap.builder();
+    private boolean requireNonOptionalScalarProperties = true;
 
     BuilderImpl() {}
 
@@ -141,6 +142,12 @@ class SchemaGeneratorImpl implements SchemaGenerator {
     }
 
     @Override
+    public Builder requireNonOptionalScalarProperties(boolean require) {
+      this.requireNonOptionalScalarProperties = require;
+      return this;
+    }
+
+    @Override
     public <T extends PropertyExtension> Builder bindPropertyExtension(
       T propertyExtension
     ) {
@@ -167,7 +174,8 @@ class SchemaGeneratorImpl implements SchemaGenerator {
         schemaExtensions.build(),
         schemaExtensionClasses.build(),
         propertyExtensions.build(),
-        propertyExtensionClasses.build()
+        propertyExtensionClasses.build(),
+        requireNonOptionalScalarProperties
       );
     }
 
