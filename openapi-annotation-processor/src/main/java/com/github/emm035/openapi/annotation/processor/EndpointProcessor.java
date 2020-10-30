@@ -1,6 +1,5 @@
 package com.github.emm035.openapi.annotation.processor;
 
-import com.github.emm035.openapi.annotation.processor.api.exceptions.NoMatchingParserException;
 import com.github.emm035.openapi.annotation.processor.api.models.ParsedEndpoint;
 import com.github.emm035.openapi.annotation.processor.api.parsers.ConsumesContentTypeParser;
 import com.github.emm035.openapi.annotation.processor.api.parsers.MethodParser;
@@ -11,14 +10,15 @@ import com.github.emm035.openapi.annotation.processor.api.parsers.ProducesConten
 import com.github.emm035.openapi.annotation.processor.api.parsers.ResponseParser;
 import com.google.auto.common.MoreElements;
 import com.google.inject.Inject;
-import java.lang.annotation.Annotation;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.tools.Diagnostic;
+import java.lang.annotation.Annotation;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class EndpointProcessor {
   private final Messager messager;
@@ -114,7 +114,7 @@ public class EndpointProcessor {
         element.getSimpleName()
       );
       messager.printMessage(Diagnostic.Kind.ERROR, message);
-      throw new NoMatchingParserException(message);
+      throw new IllegalStateException(message);
     }
 
     T selectedParser = matchingParsers.iterator().next();
@@ -123,7 +123,7 @@ public class EndpointProcessor {
       messager.printMessage(
         Diagnostic.Kind.WARNING,
         String.format(
-          "Found multiple parsers matching \"%s\". Using %s",
+          "Found multiple parsers matching \"%s\" - this may cause non-deterministic behavior. Using %s",
           element.getSimpleName(),
           selectedParser.getClass().getSimpleName()
         )
