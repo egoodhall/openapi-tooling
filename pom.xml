@@ -52,7 +52,7 @@
     <dep.guava.version>28.2-jre</dep.guava.version>
     <dep.guice.version>4.2.3</dep.guice.version>
     <dep.immutables.version>2.8.3</dep.immutables.version>
-    <dep.jackson-databind.version>2.9.10.5</dep.jackson-databind.version>
+    <dep.jackson-databind.version>2.9.10.7</dep.jackson-databind.version>
     <dep.jackson.version>2.9.10</dep.jackson.version>
     <dep.jsr305.version>3.0.1</dep.jsr305.version>
     <dep.junit.version>4.13.1</dep.junit.version>
