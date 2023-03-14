@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.emm035.openapi.core.v3.jackson.Json;
 import com.google.common.io.ByteStreams;
 import java.io.IOException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public abstract class BasicJsonTest<T> {
 

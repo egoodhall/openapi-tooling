@@ -15,13 +15,13 @@ import com.github.emm035.openapi.core.v3.schemas.Schema;
 import com.github.emm035.openapi.schema.generator.exceptions.SchemaGenerationException;
 import com.github.emm035.openapi.schema.generator.models.Base;
 import com.github.emm035.openapi.schema.generator.models.Impl1;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SchemaGeneratorTest {
   private static final SchemaGenerator SCHEMA_GENERATOR = SchemaGenerator.newInstance();
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     SCHEMA_GENERATOR.clearCachedSchemas();
   }

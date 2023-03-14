@@ -12,7 +12,7 @@ import com.google.common.io.ByteStreams;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OpenApiTest {
   private static final ObjectMapper om = Json.MAPPER;
