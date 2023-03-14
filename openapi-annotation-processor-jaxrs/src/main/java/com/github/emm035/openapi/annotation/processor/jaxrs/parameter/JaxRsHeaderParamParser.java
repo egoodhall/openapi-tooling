@@ -5,8 +5,8 @@ import static com.github.emm035.openapi.core.v3.parameters.Parameter.Location;
 import com.github.emm035.openapi.annotation.processor.api.models.ParsedParameter;
 import com.github.emm035.openapi.annotation.processor.api.parsers.ParamParser;
 import com.squareup.javapoet.TypeName;
+import jakarta.ws.rs.HeaderParam;
 import javax.lang.model.element.VariableElement;
-import javax.ws.rs.HeaderParam;
 
 public class JaxRsHeaderParamParser implements ParamParser {
 

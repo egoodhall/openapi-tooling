@@ -2,10 +2,10 @@ package com.github.emm035.openapi.annotation.processor.jaxrs.content;
 
 import com.github.emm035.openapi.annotation.processor.api.parsers.ProducesContentTypeParser;
 import com.google.common.collect.ImmutableSet;
+import jakarta.ws.rs.Produces;
 import java.util.Optional;
 import java.util.Set;
 import javax.lang.model.element.ExecutableElement;
-import javax.ws.rs.Produces;
 
 public class JaxRsProducesContentTypeParser implements ProducesContentTypeParser {
 

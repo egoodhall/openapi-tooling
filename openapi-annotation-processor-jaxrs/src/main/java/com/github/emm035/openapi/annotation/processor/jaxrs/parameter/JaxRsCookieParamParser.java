@@ -4,8 +4,8 @@ import com.github.emm035.openapi.annotation.processor.api.models.ParsedParameter
 import com.github.emm035.openapi.annotation.processor.api.parsers.ParamParser;
 import com.github.emm035.openapi.core.v3.parameters.Parameter;
 import com.squareup.javapoet.TypeName;
+import jakarta.ws.rs.CookieParam;
 import javax.lang.model.element.VariableElement;
-import javax.ws.rs.CookieParam;
 
 public class JaxRsCookieParamParser implements ParamParser {
 

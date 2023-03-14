@@ -3,10 +3,10 @@ package com.github.emm035.openapi.annotation.processor.jaxrs.content;
 import com.github.emm035.openapi.annotation.processor.api.parsers.ConsumesContentTypeParser;
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableSet;
+import jakarta.ws.rs.Consumes;
 import java.util.Optional;
 import java.util.Set;
 import javax.lang.model.element.ExecutableElement;
-import javax.ws.rs.Consumes;
 
 @AutoService(ConsumesContentTypeParser.class)
 public class JaxRsConsumesContentTypeParser implements ConsumesContentTypeParser {

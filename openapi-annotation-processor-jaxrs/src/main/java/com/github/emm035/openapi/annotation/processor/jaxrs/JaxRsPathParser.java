@@ -1,9 +1,9 @@
 package com.github.emm035.openapi.annotation.processor.jaxrs;
 
 import com.github.emm035.openapi.annotation.processor.api.parsers.PathParser;
+import jakarta.ws.rs.Path;
 import java.util.Optional;
 import javax.lang.model.element.ExecutableElement;
-import javax.ws.rs.Path;
 
 public class JaxRsPathParser implements PathParser {
 
